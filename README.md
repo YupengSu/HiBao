@@ -8,4 +8,4 @@
 >
 > Date: 2023. 6.30
 >
->Yjq: test 1
+>Yjq: test
