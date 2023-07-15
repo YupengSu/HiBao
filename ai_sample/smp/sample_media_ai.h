@@ -20,6 +20,8 @@
 #include "list.h"
 #include "osd_img.h"
 
+#include "hi_common.h"
+
 #ifdef __cplusplus
 #if __cplusplus
 extern "C" {

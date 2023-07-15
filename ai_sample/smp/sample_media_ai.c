@@ -1898,9 +1898,11 @@ HI_VOID ViPramCfg(HI_VOID)
     ViCfgInit(&g_aicMediaInfo.viCfg);
     ViCfgSetDev(&g_aicMediaInfo.viCfg, 0, -1);
     ViCfgSetPipe(&g_aicMediaInfo.viCfg, 0, -1, -1, -1);
-    g_aicMediaInfo.viCfg.astViInfo[0].stPipeInfo.enMastPipeMode = 0;
+    // g_aicMediaInfo.viCfg.astViInfo[0].stPipeInfo.enMastPipeMode = 0;
+    g_aicMediaInfo.viCfg.astViInfo[0].stPipeInfo.enMastPipeMode = 2;
     ViCfgSetChn(&g_aicMediaInfo.viCfg, 0, -1, -1, -1);
-    g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 1;
+    // g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 1;
+    g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 0;
 }
 
 static HI_VOID StVbParamCfg(VbCfg *self)
@@ -1935,9 +1937,12 @@ static HI_VOID StVoParamCfg(VoCfg *self)
     SAMPLE_COMM_VO_GetDefConfig(self);
     self->enDstDynamicRange = DYNAMIC_RANGE_SDR8;
 
-    self->enVoIntfType = VO_INTF_MIPI; /* set VO int type */
-    self->enIntfSync = VO_OUTPUT_USER; /* set VO output information */
+    // self->enVoIntfType = VO_INTF_MIPI; /* set VO int type */
+    // self->enIntfSync = VO_OUTPUT_USER; /* set VO output information */
 
+    self->enVoIntfType = VO_INTF_HDMI;
+    self->enIntfSync = VO_OUTPUT_1080P60; 
+    
     self->enPicSize = g_aicMediaInfo.enPicSize;
 }
 
@@ -1948,6 +1953,7 @@ static HI_VOID VpssParamCfg(HI_VOID)
         g_aicMediaInfo.stSize.u32Width, g_aicMediaInfo.stSize.u32Width);
     g_aicMediaInfo.vpssCfg.grpAttr.enPixelFormat = PIXEL_FORMAT_YVU_SEMIPLANAR_420;
     VpssCfgAddChn(&g_aicMediaInfo.vpssCfg, AIC_VPSS_ZOUT_CHN, NULL, AICSTART_VI_OUTWIDTH, AICSTART_VI_OUTHEIGHT);
+    // VpssCfgAddChn(&g_aicMediaInfo.vpssCfg, 0, NULL, AICSTART_VI_OUTWIDTH, AICSTART_VI_OUTHEIGHT);
     HI_ASSERT(!g_aicMediaInfo.viSess);
 }
 
@@ -2152,6 +2158,18 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     HI_S32             s32Ret;
     HI_S32             fd = 0;
 
+    VI_PIPE ViPipe = 0;
+    VI_CHN ViChn = 0;
+    VO_CHN VoChn = 0;
+    VPSS_GRP VpssGrp = 0;
+    VPSS_CHN VpssChn = VPSS_CHN0;
+    VENC_CHN           VencChn[1] = {0};
+    PAYLOAD_TYPE_E enType = PT_H265;
+    SAMPLE_RC_E enRcMode = SAMPLE_RC_CBR;
+    HI_U32 u32Profile = 0;
+    HI_BOOL bRcnRefShareBuf = HI_FALSE;
+    VENC_GOP_ATTR_S stGopAttr;
+
     /*
      * 配置VI参数
      * Config VI parameter
@@ -2191,8 +2209,10 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
      * 设置VO至MIPI通路，获取MIPI设备
      * Set VO config to MIPI, get MIPI device
      */
+    /*
     s32Ret = SAMPLE_VO_CONFIG_MIPI(&fd);
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT, "CONFIG MIPI FAIL.s32Ret:0x%x\n", s32Ret);
+    */
 
     /*
      * 配置VPSS参数
@@ -2203,6 +2223,25 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT1, "ViVpss Sess create FAIL, ret=%#x\n", s32Ret);
     g_aicMediaInfo.vpssGrp = AIC_VPSS_GRP;
     g_aicMediaInfo.vpssChn0 = AIC_VPSS_ZOUT_CHN;
+    // g_aicMediaInfo.vpssChn0 = 0;
+
+    /*
+     * 配置VENC参数
+     * Config VENC parameter
+     */
+    stGopAttr.enGopMode = VENC_GOPMODE_NORMALP;
+    stGopAttr.stNormalP.s32IPQpDelta = 2; /* IPQpDelta: 2 */
+    s32Ret = SAMPLE_COMM_VENC_Start(VencChn[0], enType, g_aicMediaInfo.enPicSize, enRcMode, u32Profile, bRcnRefShareBuf, &stGopAttr);
+    if (s32Ret != HI_SUCCESS) {
+        SAMPLE_PRT("start venc failed. s32Ret: 0x%x !\n", s32Ret);
+        goto EXIT3;
+    }
+
+    s32Ret = SAMPLE_COMM_VPSS_Bind_VENC(VpssGrp, VpssChn, VencChn[0]);
+    if (s32Ret != HI_SUCCESS) {
+        SAMPLE_PRT("vpss group %d bind venc chn %d failed. s32Ret: 0x%x !n", VpssGrp, VencChn[0], s32Ret);
+        goto EXIT4;
+    }
 
     /*
      * 配置VO参数
@@ -2214,9 +2253,15 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
      * 启动VO到MIPI lcd通路
      * Start VO to MIPI lcd
      */
+    /*
     s32Ret = SampleCommVoStartMipi(&g_aicMediaInfo.voCfg);
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT1, "start vo FAIL. s32Ret: 0x%x\n", s32Ret);
-
+    */
+    s32Ret = SAMPLE_COMM_VO_StartVO(&g_aicMediaInfo.voCfg);
+    if (s32Ret != HI_SUCCESS) {
+        SAMPLE_PRT("start vo failed. s32Ret: 0x%x !\n", s32Ret);
+        goto EXIT5;
+    }
     /*
      * VPSS绑定VO
      * VPSS bind VO
@@ -2224,6 +2269,12 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     s32Ret = SAMPLE_COMM_VPSS_Bind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT2, "vo bind vpss FAIL. s32Ret: 0x%x\n", s32Ret);
     SAMPLE_PRT("vpssGrp:%d, vpssChn:%d\n", g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0);
+
+    s32Ret = SAMPLE_COMM_VENC_StartGetStream(VencChn, sizeof(VencChn) / sizeof(VENC_CHN));
+    if (s32Ret != HI_SUCCESS) {
+        SAMPLE_PRT("Get venc stream failed!\n");
+        goto EXIT7;
+    }
 
     /*
      * 创建工作线程运行ai
@@ -2243,10 +2294,20 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     PauseDoUnloadHandClassifyModel();
 
     SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
+    /*
     SAMPLE_VO_DISABLE_MIPITx(fd);
     SampleCloseMipiTxFd(fd);
     system("echo 0 > /sys/class/gpio/gpio55/value");
+    */
 
+EXIT7:
+    SAMPLE_COMM_VPSS_UnBind_VO(VpssGrp, VpssChn, g_aicMediaInfo.voCfg.VoDev, VoChn);
+EXIT5:
+    SAMPLE_COMM_VPSS_UnBind_VENC(VpssGrp, VpssChn, VencChn[0]);
+EXIT4:
+    SAMPLE_COMM_VENC_Stop(VencChn[0]);
+EXIT3:
+    SAMPLE_COMM_VI_UnBind_VPSS(ViPipe, ViChn, VpssGrp);
 EXIT2:
     SAMPLE_COMM_VO_StopVO(&g_aicMediaInfo.voCfg);
 EXIT1:

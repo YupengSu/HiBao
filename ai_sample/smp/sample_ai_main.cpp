@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
      * MIPI为GPIO55，开启液晶屏背光
      * MIPI is GPIO55, Turn on the backlight of the LCD screen
      */
-    system("cd /sys/class/gpio/;echo 55 > export;echo out > gpio55/direction;echo 1 > gpio55/value");
+    // system("cd /sys/class/gpio/;echo 55 > export;echo out > gpio55/direction;echo 1 > gpio55/value");
 
     switch (*argv[1]) {
         case '0':
