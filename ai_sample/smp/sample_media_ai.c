@@ -2229,20 +2229,21 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
      * 配置VENC参数
      * Config VENC parameter
      */
-    stGopAttr.enGopMode = VENC_GOPMODE_NORMALP;
-    stGopAttr.stNormalP.s32IPQpDelta = 2; /* IPQpDelta: 2 */
+    // stGopAttr.enGopMode = VENC_GOPMODE_NORMALP;
+    // stGopAttr.stNormalP.s32IPQpDelta = 2; /* IPQpDelta: 2 */
+    /*
     s32Ret = SAMPLE_COMM_VENC_Start(VencChn[0], enType, g_aicMediaInfo.enPicSize, enRcMode, u32Profile, bRcnRefShareBuf, &stGopAttr);
     if (s32Ret != HI_SUCCESS) {
         SAMPLE_PRT("start venc failed. s32Ret: 0x%x !\n", s32Ret);
         goto EXIT3;
     }
-
+    
     s32Ret = SAMPLE_COMM_VPSS_Bind_VENC(VpssGrp, VpssChn, VencChn[0]);
     if (s32Ret != HI_SUCCESS) {
         SAMPLE_PRT("vpss group %d bind venc chn %d failed. s32Ret: 0x%x !n", VpssGrp, VencChn[0], s32Ret);
         goto EXIT4;
     }
-
+    */
     /*
      * 配置VO参数
      * Config VO parameter
@@ -2260,7 +2261,7 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     s32Ret = SAMPLE_COMM_VO_StartVO(&g_aicMediaInfo.voCfg);
     if (s32Ret != HI_SUCCESS) {
         SAMPLE_PRT("start vo failed. s32Ret: 0x%x !\n", s32Ret);
-        goto EXIT5;
+        goto EXIT1;
     }
     /*
      * VPSS绑定VO
@@ -2269,13 +2270,13 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     s32Ret = SAMPLE_COMM_VPSS_Bind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT2, "vo bind vpss FAIL. s32Ret: 0x%x\n", s32Ret);
     SAMPLE_PRT("vpssGrp:%d, vpssChn:%d\n", g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0);
-
+    /*
     s32Ret = SAMPLE_COMM_VENC_StartGetStream(VencChn, sizeof(VencChn) / sizeof(VENC_CHN));
     if (s32Ret != HI_SUCCESS) {
         SAMPLE_PRT("Get venc stream failed!\n");
         goto EXIT7;
     }
-
+    */
     /*
      * 创建工作线程运行ai
      * Create work thread to run ai
@@ -2292,22 +2293,24 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     pthread_join(g_aiProcessThread, NULL);
     g_aiProcessThread = 0;
     PauseDoUnloadHandClassifyModel();
+    
+    // SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
+    // SAMPLE_COMM_VENC_StopGetStream();
 
-    SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     /*
     SAMPLE_VO_DISABLE_MIPITx(fd);
     SampleCloseMipiTxFd(fd);
     system("echo 0 > /sys/class/gpio/gpio55/value");
     */
 
-EXIT7:
-    SAMPLE_COMM_VPSS_UnBind_VO(VpssGrp, VpssChn, g_aicMediaInfo.voCfg.VoDev, VoChn);
-EXIT5:
-    SAMPLE_COMM_VPSS_UnBind_VENC(VpssGrp, VpssChn, VencChn[0]);
-EXIT4:
-    SAMPLE_COMM_VENC_Stop(VencChn[0]);
-EXIT3:
-    SAMPLE_COMM_VI_UnBind_VPSS(ViPipe, ViChn, VpssGrp);
+// EXIT7:
+//     SAMPLE_COMM_VPSS_UnBind_VO(VpssGrp, VpssChn, g_aicMediaInfo.voCfg.VoDev, VoChn);
+// EXIT5:
+//     SAMPLE_COMM_VPSS_UnBind_VENC(VpssGrp, VpssChn, VencChn[0]);
+// EXIT4:
+//     SAMPLE_COMM_VENC_Stop(VencChn[0]);
+// EXIT3:
+//     SAMPLE_COMM_VI_UnBind_VPSS(ViPipe, ViChn, VpssGrp);
 EXIT2:
     SAMPLE_COMM_VO_StopVO(&g_aicMediaInfo.voCfg);
 EXIT1:
