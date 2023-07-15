@@ -2294,7 +2294,7 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     g_aiProcessThread = 0;
     PauseDoUnloadHandClassifyModel();
     
-    // SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
+    SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     // SAMPLE_COMM_VENC_StopGetStream();
 
     /*
