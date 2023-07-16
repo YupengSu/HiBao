@@ -41,6 +41,8 @@
 #include "misc_util.h"
 #include "hisignalling.h"
 
+#include "osd_img.h"
+
 #ifdef __cplusplus
 #if __cplusplus
 extern "C" {
@@ -58,6 +60,23 @@ extern "C" {
 #define IMAGE_HEIGHT       224
 #define MODEL_FILE_GESTURE    "/userdata/models/face/face_reco.wk" // darknet framework wk model
 
+/*
+ * ARGB1555 common colors
+ * ARGB1555常用颜色
+ */
+#define ARGB1555_RED        0xFC00 // 1 11111 00000 00000
+#define ARGB1555_GREEN      0x83E0 // 1 00000 11111 00000
+#define ARGB1555_BLUE       0x801F // 1 00000 00000 11111
+#define ARGB1555_YELLOW     0xFFE0 // 1 11111 11111 00000
+#define ARGB1555_YELLOW2    0xFF00 // 1 11111 11111 00000
+#define ARGB1555_WHITE      0xFFFF // 1 11111 11111 11111
+#define ARGB1555_BLACK      0x8000 // 1 00000 00000 00000
+
+#define TXT_BEGX            20
+#define TXT_BEGY            20
+
+#define NORM_BUF_SIZE       256 // normal buf size
+
 static int biggestBoxIndex;
 static IVE_IMAGE_S img;
 static DetectObjInfo objs[DETECT_OBJ_MAX] = {0};
@@ -72,14 +91,26 @@ static VIDEO_FRAME_INFO_S frmIn;
 static VIDEO_FRAME_INFO_S frmDst;
 int uartFd = 0;
 
+static OsdSet* g_osdsTrash = NULL;
+static HI_S32 g_osd0Trash = -1;
+
 /*
  * 加载手部检测和手势分类模型
  * Load hand detect and classify model
  */
-HI_S32 Yolo2HandDetectResnetClassifyLoad(uintptr_t* model)
-{
-    SAMPLE_SVP_NNIE_CFG_S *self = NULL;
+HI_S32 Yolo2HandDetectResnetClassifyLoad(uintptr_t* model, OsdSet* osds)
+{   
     HI_S32 ret;
+    ret = OsdLibInit();
+    HI_ASSERT(ret == HI_SUCCESS);
+
+    g_osdsTrash = osds;
+    HI_ASSERT(g_osdsTrash);
+    g_osd0Trash = OsdsCreateRgn(g_osdsTrash);
+    HI_ASSERT(g_osd0Trash >= 0);
+
+    SAMPLE_SVP_NNIE_CFG_S *self = NULL;
+    // HI_S32 ret;
 
     ret = CnnCreate(&self, MODEL_FILE_GESTURE);
     *model = ret < 0 ? 0 : (uintptr_t)self;
@@ -108,6 +139,8 @@ HI_S32 Yolo2HandDetectResnetClassifyUnload(uintptr_t model)
     HandDetectExit(); // Uninitialize the hand detection model
     close(uartFd);
     SAMPLE_PRT("Unload hand detect claasify model success\n");
+
+    OsdsClear(g_osdsTrash);
 
     return 0;
 }
@@ -148,7 +181,8 @@ static HI_S32 GetBiggestHandIndex(RectBox boxs[], int detectNum)
  * Hand gesture recognition info
  */
 static void HandDetectFlag(const RecogNumInfo resBuf)
-{
+{   
+    HI_CHAR osdBuf[NORM_BUF_SIZE] = "Test";
     HI_CHAR *gestureName = NULL;
     switch (resBuf.num) {
         case 0u:
@@ -195,6 +229,10 @@ static void HandDetectFlag(const RecogNumInfo resBuf)
             SAMPLE_PRT("----gesture name----:%s\n", gestureName);
             break;
     }
+    // osdBuf = gestureName;
+    HI_OSD_ATTR_S rgn;
+    TxtRgnInit(&rgn, osdBuf, TXT_BEGX, TXT_BEGY, ARGB1555_YELLOW2); // font width and heigt use default 40
+    OsdsSetRgn(g_osdsTrash, g_osd0Trash, &rgn);
     SAMPLE_PRT("hand gesture success\n");
 }
 

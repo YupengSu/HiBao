@@ -30,7 +30,7 @@ extern "C" {
  * 加载手部检测和手势分类模型
  * Load hand detect and classify model
  */
-HI_S32 Yolo2HandDetectResnetClassifyLoad(uintptr_t* model);
+HI_S32 Yolo2HandDetectResnetClassifyLoad(uintptr_t* model, OsdSet* osds);
 
 /*
  * 卸载手部检测和手势分类模型

@@ -1824,7 +1824,10 @@ static HI_VOID HandClassifyAiProcess(VIDEO_FRAME_INFO_S frm, VO_LAYER voLayer, V
     int ret;
     if (GetCfgBool("hand_classify_switch:support_hand_classify", true)) {
         if (g_workPlug.model == 0) {
-            ret = Yolo2HandDetectResnetClassifyLoad(&g_workPlug.model);
+            HI_ASSERT(!g_aicMediaInfo.osds);
+            g_aicMediaInfo.osds = OsdsCreate(HI_OSD_BINDMOD_VPSS, g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0);
+            HI_ASSERT(g_aicMediaInfo.osds);
+            ret = Yolo2HandDetectResnetClassifyLoad(&g_workPlug.model, g_aicMediaInfo.osds);
             if (ret < 0) {
                 g_workPlug.model = 0;
                 SAMPLE_CHECK_EXPR_GOTO(ret < 0, HAND_RELEASE,
@@ -2020,6 +2023,8 @@ static HI_S32 PauseDoUnloadHandClassifyModel(HI_VOID)
         SAMPLE_CHECK_EXPR_RET(s32Ret != HI_SUCCESS, s32Ret, "unload hand model err:%x\n", s32Ret);
         ConfBaseExt();
         g_num = 0;
+        OsdsClear(g_aicMediaInfo.osds);
+        OsdsDestroy(g_aicMediaInfo.osds);
     }
 
     return s32Ret;
