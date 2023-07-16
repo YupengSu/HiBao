@@ -93,7 +93,7 @@ int uartFd = 0;
 
 static OsdSet* g_osdsTrash = NULL;
 static HI_S32 g_osd0Trash = -1;
-HI_CHAR osdBuf[NORM_BUF_SIZE] = "Unknown";
+HI_CHAR osdBuf[NORM_BUF_SIZE] = "Unknown   ";
 
 /*
  * 加载手部检测和手势分类模型
@@ -184,54 +184,42 @@ static HI_S32 GetBiggestHandIndex(RectBox boxs[], int detectNum)
 static void HandDetectFlag(const RecogNumInfo resBuf)
 {   
     HI_CHAR *gestureName = NULL;
-    switch (resBuf.num) {
-        case 0u:
-            // gestureName = "gesture fist";
-            memcpy(osdBuf, "PengGuanqi", 10);
-            gestureName = "pengguanqi";
-            UartSendRead(uartFd, FistGesture); // 拳头手势
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 1u:
-            // gestureName = "gesture indexUp";
-            memcpy(osdBuf, "YangJiaqi", 9);
-            gestureName = "yangjiaqi";
-            UartSendRead(uartFd, ForefingerGesture); // 食指手势
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 2u:
-            // gestureName = "gesture OK";
-            memcpy(osdBuf, "SuYupeng", 8);
-            gestureName = "suyupeng";
-            UartSendRead(uartFd, OkGesture); // OK手势
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 3u:
-            gestureName = "gesture palm";
-            UartSendRead(uartFd, PalmGesture); // 手掌手势
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 4u:
-            gestureName = "gesture yes";
-            UartSendRead(uartFd, YesGesture); // yes手势
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 5u:
-            gestureName = "gesture pinchOpen";
-            UartSendRead(uartFd, ForefingerAndThumbGesture); // 食指 + 大拇指
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        case 6u:
-            gestureName = "gesture phoneCall";
-            UartSendRead(uartFd, LittleFingerAndThumbGesture); // 大拇指 + 小拇指
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
-        default:
-            gestureName = "gesture others";
-            UartSendRead(uartFd, InvalidGesture); // 无效值
-            SAMPLE_PRT("----gesture name----:%s\n", gestureName);
-            break;
+    printf("score: %d\n", resBuf.score);
+    if (resBuf.score >= 4050){
+        switch (resBuf.num) {
+            case 0u:
+                memcpy(osdBuf, "PengGuanqi", 10);
+                gestureName = "pengguanqi";
+                UartSendRead(uartFd, FistGesture); // 拳头手势
+                SAMPLE_PRT("----gesture name----:%s\n", gestureName);
+                break;
+            case 1u:
+                memcpy(osdBuf, "YangJiaqi ", 10);
+                gestureName = "yangjiaqi";
+                UartSendRead(uartFd, ForefingerGesture); // 食指手势
+                SAMPLE_PRT("----gesture name----:%s\n", gestureName);
+                break;
+            case 2u:
+                memcpy(osdBuf, "SuYupeng  ", 10);
+                gestureName = "suyupeng";
+                UartSendRead(uartFd, OkGesture); // OK手势
+                SAMPLE_PRT("----gesture name----:%s\n", gestureName);
+                break;
+            default:
+                memcpy(osdBuf, "Unknown   ", 10);
+                gestureName = "gesture others";
+                UartSendRead(uartFd, InvalidGesture); // 无效值
+                SAMPLE_PRT("----gesture name----:%s\n", gestureName);
+                break;
+        }
     }
+    else {
+        memcpy(osdBuf, "Unknown   ", 10);
+        gestureName = "gesture others";
+        UartSendRead(uartFd, InvalidGesture); // 无效值
+        SAMPLE_PRT("----gesture name----:%s\n", gestureName);
+    }
+    
     SAMPLE_PRT("hand gesture success\n");
 }
 
@@ -304,7 +292,7 @@ HI_S32 Yolo2HandDetectResnetClassifyCal(uintptr_t model, VIDEO_FRAME_INFO_S *src
         IveImgDestroy(&imgIn);
     } 
     else{
-        memcpy(osdBuf, "Unknown", 7);
+        memcpy(osdBuf, "Unknown   ", 10);
     }
     HI_OSD_ATTR_S rgn;
     TxtRgnInit(&rgn, osdBuf, TXT_BEGX, TXT_BEGY, ARGB1555_YELLOW2); // font width and heigt use default 40

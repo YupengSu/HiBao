@@ -706,7 +706,7 @@ void UartSendRead(int fd, refuseClassification refuseType)
     unsigned char writeBuffer6[4] = {0, 2, 0, 5};
     unsigned char writeBuffer7[4] = {0, 2, 0, 6};
     unsigned char writeBuffer8[4] = {0, 2, 0, 7};
-    unsigned char writeBuffer9[4] = {0, 2, 0, 8};
+    unsigned char writeBuffer9[4] = {0, 2, 0, 0};
     unsigned char readBuff[16] = {0};
 
 #ifdef  EXPANSION_BOARD
