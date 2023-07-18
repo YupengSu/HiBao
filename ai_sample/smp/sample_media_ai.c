@@ -142,6 +142,7 @@ HI_VOID SAMPLE_VO_GetUserChnAttr(VO_CHN_ATTR_S *pstChnAttr, SIZE_S *pstDevSize, 
  * 打开MIPI Tx设备
  * Open MIPI Tx device
  */
+
 HI_S32 SampleOpenMipiTxFd(HI_VOID)
 {
     HI_S32 fd;
@@ -1908,6 +1909,18 @@ HI_VOID ViPramCfg(HI_VOID)
     g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 0;
 }
 
+HI_VOID ViPramCfg_mipi(HI_VOID)
+{
+    ViCfgInit(&g_aicMediaInfo.viCfg);
+    ViCfgSetDev(&g_aicMediaInfo.viCfg, 0, -1);
+    ViCfgSetPipe(&g_aicMediaInfo.viCfg, 0, -1, -1, -1);
+    g_aicMediaInfo.viCfg.astViInfo[0].stPipeInfo.enMastPipeMode = 0;
+    // g_aicMediaInfo.viCfg.astViInfo[0].stPipeInfo.enMastPipeMode = 2;
+    ViCfgSetChn(&g_aicMediaInfo.viCfg, 0, -1, -1, -1);
+    g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 1;
+    // g_aicMediaInfo.viCfg.astViInfo[0].stChnInfo.enCompressMode = 0;
+}
+
 static HI_VOID StVbParamCfg(VbCfg *self)
 {
     memset_s(&g_aicMediaInfo.vbCfg, sizeof(VB_CONFIG_S), 0, sizeof(VB_CONFIG_S));
@@ -2031,11 +2044,11 @@ static HI_S32 PauseDoUnloadHandClassifyModel(HI_VOID)
 }
 
 /*
- * 将sensor采集到数据显示到液晶屏上，同时创建线程运行垃圾分类推理计算
+ * 将sensor采集到数据显示到液晶屏上，同时创建线程运行脸部检测和人脸识别推理计算
  * 视频输入->视频处理子系统->视频输出->显示屏
  *
  * Display the data collected by the sensor on the LCD screen,
- * and at the same time create a thread to run trash classification reasoning calculations
+ * and at the same time create a thread to run face detection and face recognizaion reasoning calculations
  * VI->VPSS->VO->MIPI
  */
 HI_S32 SAMPLE_MEDIA_CNN_TRASH_CLASSIFY(HI_VOID)
@@ -2047,7 +2060,7 @@ HI_S32 SAMPLE_MEDIA_CNN_TRASH_CLASSIFY(HI_VOID)
      * 配置VI参数
      * Config VI parameter
      */
-    ViPramCfg();
+    ViPramCfg_mipi();
 
     /*
      * 通过Sensor型号获取enPicSize
@@ -2120,8 +2133,9 @@ HI_S32 SAMPLE_MEDIA_CNN_TRASH_CLASSIFY(HI_VOID)
      * 创建工作线程运行ai
      * Create work thread to run ai
      */
-    s32Ret = CnnTrashAiThreadProcess();
+    s32Ret = HandClassifyAiThreadProcess();
     SAMPLE_CHECK_EXPR_RET(s32Ret != HI_SUCCESS, s32Ret, "ai proccess thread creat fail:%s\n", strerror(s32Ret));
+
     Pause();
     g_bAiProcessStopSignal = HI_TRUE;
     /*
@@ -2130,7 +2144,7 @@ HI_S32 SAMPLE_MEDIA_CNN_TRASH_CLASSIFY(HI_VOID)
      */
     pthread_join(g_aiProcessThread, NULL);
     g_aiProcessThread = 0;
-    PauseDoUnloadCnnModel();
+    PauseDoUnloadHandClassifyModel();
 
     SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     SAMPLE_VO_DISABLE_MIPITx(fd);
@@ -2151,29 +2165,17 @@ EXIT:
 }
 
 /*
- * 将sensor采集到数据显示到液晶屏上，同时创建线程运行手部检测和手势分类推理计算
- * 视频输入->视频处理子系统->视频输出->显示屏
+ * 将sensor采集到数据显示到屏幕上，同时创建线程运行脸部检测和人脸识别推理计算
+ * 视频输入->视频处理子系统->视频输出->HDMI
  *
- * Display the data collected by the sensor on the LCD screen,
- * and create threads to run hand detection and gesture classification reasoning calculations
+ * Display the data collected by the sensor on the screen through HDMI wire,
+ * and create threads to run face detection and face recognizaion reasoning calculations
  * VI->VPSS->VO->MIPI
  */
 HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
 {
     HI_S32             s32Ret;
     HI_S32             fd = 0;
-
-    VI_PIPE ViPipe = 0;
-    VI_CHN ViChn = 0;
-    VO_CHN VoChn = 0;
-    VPSS_GRP VpssGrp = 0;
-    VPSS_CHN VpssChn = VPSS_CHN0;
-    VENC_CHN           VencChn[1] = {0};
-    PAYLOAD_TYPE_E enType = PT_H265;
-    SAMPLE_RC_E enRcMode = SAMPLE_RC_CBR;
-    HI_U32 u32Profile = 0;
-    HI_BOOL bRcnRefShareBuf = HI_FALSE;
-    VENC_GOP_ATTR_S stGopAttr;
 
     /*
      * 配置VI参数
@@ -2211,15 +2213,6 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     SAMPLE_CHECK_EXPR_RET(s32Ret != HI_SUCCESS, s32Ret, "system init failed, s32Ret=%#x\n", s32Ret);
 
     /*
-     * 设置VO至MIPI通路，获取MIPI设备
-     * Set VO config to MIPI, get MIPI device
-     */
-    /*
-    s32Ret = SAMPLE_VO_CONFIG_MIPI(&fd);
-    SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT, "CONFIG MIPI FAIL.s32Ret:0x%x\n", s32Ret);
-    */
-
-    /*
      * 配置VPSS参数
      * Config VPSS parameter
      */
@@ -2228,27 +2221,7 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT1, "ViVpss Sess create FAIL, ret=%#x\n", s32Ret);
     g_aicMediaInfo.vpssGrp = AIC_VPSS_GRP;
     g_aicMediaInfo.vpssChn0 = AIC_VPSS_ZOUT_CHN;
-    // g_aicMediaInfo.vpssChn0 = 0;
 
-    /*
-     * 配置VENC参数
-     * Config VENC parameter
-     */
-    // stGopAttr.enGopMode = VENC_GOPMODE_NORMALP;
-    // stGopAttr.stNormalP.s32IPQpDelta = 2; /* IPQpDelta: 2 */
-    /*
-    s32Ret = SAMPLE_COMM_VENC_Start(VencChn[0], enType, g_aicMediaInfo.enPicSize, enRcMode, u32Profile, bRcnRefShareBuf, &stGopAttr);
-    if (s32Ret != HI_SUCCESS) {
-        SAMPLE_PRT("start venc failed. s32Ret: 0x%x !\n", s32Ret);
-        goto EXIT3;
-    }
-    
-    s32Ret = SAMPLE_COMM_VPSS_Bind_VENC(VpssGrp, VpssChn, VencChn[0]);
-    if (s32Ret != HI_SUCCESS) {
-        SAMPLE_PRT("vpss group %d bind venc chn %d failed. s32Ret: 0x%x !n", VpssGrp, VencChn[0], s32Ret);
-        goto EXIT4;
-    }
-    */
     /*
      * 配置VO参数
      * Config VO parameter
@@ -2256,13 +2229,9 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     StVoParamCfg(&g_aicMediaInfo.voCfg);
 
     /*
-     * 启动VO到MIPI lcd通路
-     * Start VO to MIPI lcd
+     * 启动VO
+     * Start VO
      */
-    /*
-    s32Ret = SampleCommVoStartMipi(&g_aicMediaInfo.voCfg);
-    SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT1, "start vo FAIL. s32Ret: 0x%x\n", s32Ret);
-    */
     s32Ret = SAMPLE_COMM_VO_StartVO(&g_aicMediaInfo.voCfg);
     if (s32Ret != HI_SUCCESS) {
         SAMPLE_PRT("start vo failed. s32Ret: 0x%x !\n", s32Ret);
@@ -2275,13 +2244,7 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     s32Ret = SAMPLE_COMM_VPSS_Bind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
     SAMPLE_CHECK_EXPR_GOTO(s32Ret != HI_SUCCESS, EXIT2, "vo bind vpss FAIL. s32Ret: 0x%x\n", s32Ret);
     SAMPLE_PRT("vpssGrp:%d, vpssChn:%d\n", g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0);
-    /*
-    s32Ret = SAMPLE_COMM_VENC_StartGetStream(VencChn, sizeof(VencChn) / sizeof(VENC_CHN));
-    if (s32Ret != HI_SUCCESS) {
-        SAMPLE_PRT("Get venc stream failed!\n");
-        goto EXIT7;
-    }
-    */
+    
     /*
      * 创建工作线程运行ai
      * Create work thread to run ai
@@ -2300,22 +2263,7 @@ HI_S32 SAMPLE_MEDIA_HAND_CLASSIFY(HI_VOID)
     PauseDoUnloadHandClassifyModel();
     
     SAMPLE_COMM_VPSS_UnBind_VO(g_aicMediaInfo.vpssGrp, g_aicMediaInfo.vpssChn0, g_aicMediaInfo.voCfg.VoDev, 0);
-    // SAMPLE_COMM_VENC_StopGetStream();
-
-    /*
-    SAMPLE_VO_DISABLE_MIPITx(fd);
-    SampleCloseMipiTxFd(fd);
-    system("echo 0 > /sys/class/gpio/gpio55/value");
-    */
-
-// EXIT7:
-//     SAMPLE_COMM_VPSS_UnBind_VO(VpssGrp, VpssChn, g_aicMediaInfo.voCfg.VoDev, VoChn);
-// EXIT5:
-//     SAMPLE_COMM_VPSS_UnBind_VENC(VpssGrp, VpssChn, VencChn[0]);
-// EXIT4:
-//     SAMPLE_COMM_VENC_Stop(VencChn[0]);
-// EXIT3:
-//     SAMPLE_COMM_VI_UnBind_VPSS(ViPipe, ViChn, VpssGrp);
+    
 EXIT2:
     SAMPLE_COMM_VO_StopVO(&g_aicMediaInfo.voCfg);
 EXIT1:

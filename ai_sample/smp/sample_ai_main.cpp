@@ -41,9 +41,8 @@ static void SAMPLE_AI_Usage(char* pchPrgName)
 {
     printf("Usage : %s <index> \n", pchPrgName);
     printf("index:\n");
-    printf("\t 0) cnn trash_classify(resnet18).\n");
-    printf("\t 1) hand classify(yolov2+resnet18).\n");
-    printf("\t 2) tennis detect(opencv).\n");
+    printf("\t 0) on LCD screen.\n");
+    printf("\t 1) on HDMI.\n");
 }
 
 /*
@@ -54,6 +53,7 @@ int main(int argc, char *argv[])
 {
     HI_S32 s32Ret = HI_FAILURE;
     sample_media_opencv mediaOpencv;
+
     if (argc < 2 || argc > 2) { // 2: argc indicates the number of parameters
         SAMPLE_AI_Usage(argv[0]);
         return HI_FAILURE;
@@ -63,13 +63,9 @@ int main(int argc, char *argv[])
         SAMPLE_AI_Usage(argv[0]);
         return HI_SUCCESS;
     }
-    sdk_init();
-    /*
-     * MIPI为GPIO55，开启液晶屏背光
-     * MIPI is GPIO55, Turn on the backlight of the LCD screen
-     */
-    // system("cd /sys/class/gpio/;echo 55 > export;echo out > gpio55/direction;echo 1 > gpio55/value");
 
+    sdk_init();
+    
     switch (*argv[1]) {
         case '0':
             SAMPLE_MEDIA_CNN_TRASH_CLASSIFY();
@@ -84,6 +80,7 @@ int main(int argc, char *argv[])
             SAMPLE_AI_Usage(argv[0]);
             break;
     }
+    
     sdk_exit();
     SAMPLE_PRT("\nsdk exit success\n");
     return s32Ret;
