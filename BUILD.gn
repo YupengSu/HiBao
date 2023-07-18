@@ -1,9 +1,9 @@
-# Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+# Copyright (C) 2022 HiHope Open Source Organization .
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -11,26 +11,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("main") {
-  sources = [
+static_library("thread_demo") {
+  sources = [ 
+    "thread.c",
     "hal_iot_gpio_ex.c",
     "uart_control.c",
-    "app_demo_iot.c",
     "cjson_init.c",
-    "iot_hmac.c",
     "iot_log.c",
+    "iot_hmac.c",
     "iot_main.c",
     "iot_profile.c",
     "iot_sta.c",
-    "main.c",
-  ]
+    "dht11.c",
+    "hal_iot_adc.c",
+     ]
 
   include_dirs = [
+    "//commonlibrary/utils_lite/include",
+    "//kernel/liteos_m/components/cmsis/2.0",
     "./",
     "//utils/native/lite/include",
     "//kernel/liteos_m/kal/cmsis",
-    "//base/iot_hardware/peripheral/interfaces/kits",  
-    "//device/hisilicon/hispark_pegasus/sdk_liteos/include/base",
+    "//base/iot_hardware/peripheral/interfaces/kits",
     "//device/hisilicon/hispark_pegasus/sdk_liteos/include/base",
     "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/lwip_sack/include/lwip",
     "//third_party/cJSON",
@@ -38,9 +40,11 @@ static_library("main") {
     "//foundation/communication/wifi_lite/interfaces/wifiservice",
     "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/paho.mqtt.c/include/mqtt",
     "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/libcoap/include/coap2",
-    "//commonlibrary/utils_lite/include",
-    "//kernel/liteos_m/components/cmsis/2.0",
-    ]
 
-    defines = [ "WITH_LWIP" ]
+    "//kernel/liteos_m/kal",
+    "//base/iot_hardware/interfaces/kits/wifiiot_lite",
+
+  ]
+
+  defines = [ "WITH_LWIP" ]
 }
