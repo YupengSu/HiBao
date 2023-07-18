@@ -13,34 +13,38 @@
  * limitations under the License.
  */
 
-#include "iot_errno.h"
-#include "iot_gpio_ex.h"
-#include "hi_gpio.h"
-#include "hi_io.h"
-#include "hi_task.h"
-#include "hi_types_base.h"
+#include <iot_log.h>
 
+static EnIotLogLevel gIoTLogLevel = EN_IOT_LOG_LEVEL_TRACE;
+static const char *gIoTLogLevelNames[] = {
+    "TRACE",
+    "DEBUG",
+    "INFO ",
+    "WARN ",
+    "ERROR",
+    "FATAL"
+};
 
-unsigned int IoSetPull(unsigned int id, IotIoPull val)
+int IoTLogLevelSet(EnIotLogLevel level)
 {
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
+    int ret = -1;
+    if (level < EN_IOT_LOG_LEVEL_MAX) {
+        gIoTLogLevel = level;
+        ret = 0;
     }
-    return hi_io_set_pull((hi_io_name)id, (hi_io_pull)val);
+    return ret;
 }
 
-unsigned int IoSetFunc(unsigned int id, unsigned char val)
+EnIotLogLevel IoTLogLevelGet(void)
 {
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
-    }
-    return hi_io_set_func((hi_io_name)id, val);
+    return gIoTLogLevel;
 }
 
-unsigned int TaskMsleep(unsigned int ms)
+const char *IoTLogLevelGetName(EnIotLogLevel logLevel)
 {
-    if (ms <= 0) {
-        return IOT_FAILURE;
+    if (logLevel >= EN_IOT_LOG_LEVEL_MAX) {
+        return "NULL ";
+    } else {
+        return gIoTLogLevelNames[logLevel];
     }
-    return hi_sleep((hi_u32)ms);
 }

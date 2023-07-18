@@ -184,13 +184,13 @@ static void DhtTask(const int *arg)
     while (NUM)
     {   
         DHT11_Read_Data(&temp,&humi);/* code */
-        printf("temp:%d,humi:%d\r\n",temp,humi);
+        //printf("temp:%d,humi:%d\r\n",temp,humi);
     }
     
     return NULL;
 }
 
-static void LedExampleEntry(void)
+/*static void LedExampleEntry(void)
 {
     osThreadAttr_t attr;
 
@@ -205,6 +205,6 @@ static void LedExampleEntry(void)
     if (osThreadNew((osThreadFunc_t)DhtTask, NULL, &attr) == NULL) {
         printf("[LedExample] Failed to create LedTask!\n");
     }
-}
+}*/
 
-SYS_RUN(LedExampleEntry);
+//SYS_RUN(LedExampleEntry);
