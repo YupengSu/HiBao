@@ -1,0 +1,70 @@
+[2023/07/18 12:57:07 718] transport  1594 is_update  true  
+[2023/07/18 12:57:07 718] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHvVJDZ5iXQaaaB2WW0d0cBCP] readable  
+[2023/07/18 12:57:07 718] isr_1conn  403  size =   366  
+[2023/07/18 12:57:07 718] isr_1conn  435  response  
+[2023/07/18 12:57:07 718] isr_1conn  483  resp_syncid =  39  
+[2023/07/18 12:57:07 718] isr_1conn  655  39  0  0  
+[2023/07/18 12:57:07 820] transport  491  [soc] [1] readable  
+[2023/07/18 12:57:07 821] transport  1756 HTTP/1.1 200 OK
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 309
+X-Req-Date: 2023/07/18 12:57:07 700
+CL: 309
+X-Res-Date: 2023/07/18 12:57:07 703
+
+----
+CT:text/plain
+CL:187
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&rss=5&cver=5%2E0%2E38%2E1195&eps=3&key=0fgkIUcqBxdN1eeY54ZlqF3yATgE2lZe1BYA7klFqdca0^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ25m4IN4D/F8lS^kcSf38ENs=
+----
+CT:binary/recresult;charset=utf8
+CE:encrypt/0.2
+CL:16
+
+Ÿà6D]¶&I  
+[2023/07/18 12:57:07 821] transport  1484 a_complete_httpmessage  200  
+[2023/07/18 12:57:07 821] transport  1594 is_update  true  
+[2023/07/18 12:57:07 821] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHvVJDZ5iXQaaaB2WW0d0cBCP] readable  
+[2023/07/18 12:57:07 821] isr_1conn  403  size =   122  
+[2023/07/18 12:57:07 822] isr_1conn  412  send_ok_num, timer_num, send_average =   12322  10  1232  
+[2023/07/18 12:57:07 822] isr_1conn  415  netperf =   90  
+[2023/07/18 12:57:07 822] isr_1conn  419  start netperf_grs_timer  
+[2023/07/18 12:57:07 822] isr_1conn  435  response  
+[2023/07/18 12:57:07 822] isr_1conn  483  resp_syncid =  40  
+[2023/07/18 12:57:07 822] isr_1conn  655  40  5  0  
+[2023/07/18 12:57:07 822] isr_1conn  662  [session] got last result  
+[2023/07/18 12:57:07 823] isr_1conn  667  time from last audio to last result:  205  .  
+[2023/07/18 12:57:07 823] isr_1conn  668  time from session-begin to session-end:  4146  .  
+[2023/07/18 12:57:07 825] network    90   ipfromenv ,  ipcache  open.xf-yun.com  def  114.118.65.91  
+[2023/07/18 12:57:07 826] transport  976  cached ip is confirmed  
+[2023/07/18 12:57:07 826] transport  1326 [soc] disconnect   
+[2023/07/18 12:57:07 826] transport  986  transport clean  
+[2023/07/18 12:57:07 826] isr_1conn  677  [session] got 2th result  
+[2023/07/18 12:57:07 826] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 120
+X-Req-Date: 2023/07/18 12:57:07 704
+CL: 120
+X-Res-Date: 2023/07/18 12:57:07 704
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E38%2E1195&rcs=2&key=0d2W6pNmbKmu7Z^nuTTl53wwXyQGjP91WWahk1OH273OKSe0KUDeFZCCB0qnWsDczA  
+[2023/07/18 12:57:08 223] isr_1conn  273  netperf_grs =   80  
+[2023/07/18 12:57:08 624] isr_1conn  273  netperf_grs =   70  
+[2023/07/18 12:57:09 027] isr_1conn  273  netperf_grs =   60  
+[2023/07/18 12:57:09 429] isr_1conn  273  netperf_grs =   50  
+[2023/07/18 12:57:09 627] isr_1conn  1239 grslt timeout  
+[2023/07/18 12:57:09 627] isr_1conn  1247 send rslt request  
+[2023/07/18 12:57:09 829] isr_1conn  273  netperf_grs =   40  
+[2023/07/18 12:57:10 230] isr_1conn  273  netperf_grs =   30  
+[2023/07/18 12:57:10 631] isr_1conn  273  netperf_grs =   20  
+[2023/07/18 12:57:11 032] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:11 432] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:11 833] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:12 234] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:12 635] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:13 036] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:13 437] isr_1conn  273  netperf_grs =   10  
+[2023/07/18 12:57:13 721] isr_1conn  2037 ASR_CLOUD_MSG_SSE  
+[2023/07/18 12:57:13 726] isr_1conn  1276 isr_1conn session info  
+[2023/07/18 12:57:13 735] isr_1conn  2180 session finished! ret =   0  

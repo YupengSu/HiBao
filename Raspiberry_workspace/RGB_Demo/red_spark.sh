@@ -1,0 +1,1 @@
+sudo python3 ~/HiBao_Project/RGB_Demo/red_spark.py

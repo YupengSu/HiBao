@@ -1,0 +1,44 @@
+[2023/07/12 23:05:16 792] isr_1conn  600  time from session-begin to session-end:  8552  .  
+[2023/07/12 23:05:16 795] network    90   ipfromenv ,  ipcache  open.xf-yun.com  def  121.37.220.137  
+[2023/07/12 23:05:16 795] transport  976  cached ip is confirmed  
+[2023/07/12 23:05:16 796] transport  1326 [soc] disconnect   
+[2023/07/12 23:05:16 796] transport  986  transport clean  
+[2023/07/12 23:05:16 796] isr_1conn  609  [session] got 3th result  
+[2023/07/12 23:05:16 799] isr_1conn  282  netperf =   100  
+[2023/07/12 23:05:16 876] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/12 23:05:17 200] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  19  1348  
+[2023/07/12 23:05:17 200] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:17 601] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  20  1281  
+[2023/07/12 23:05:17 601] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:18 002] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  21  1220  
+[2023/07/12 23:05:18 002] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:18 403] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  22  1164  
+[2023/07/12 23:05:18 403] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:18 804] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  23  1113  
+[2023/07/12 23:05:18 809] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:19 209] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  24  1067  
+[2023/07/12 23:05:19 210] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:19 610] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  25  1024  
+[2023/07/12 23:05:19 611] isr_1conn  292  netperf =   90  
+[2023/07/12 23:05:20 011] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  26  985  
+[2023/07/12 23:05:20 011] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:20 412] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  27  948  
+[2023/07/12 23:05:20 412] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:20 813] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  28  915  
+[2023/07/12 23:05:20 813] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:21 214] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  29  883  
+[2023/07/12 23:05:21 214] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:21 615] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  30  854  
+[2023/07/12 23:05:21 615] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:22 016] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  31  826  
+[2023/07/12 23:05:22 016] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:22 417] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  32  800  
+[2023/07/12 23:05:22 417] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:22 818] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  33  776  
+[2023/07/12 23:05:22 818] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:23 172] isr_1conn  1828 ASR_CLOUD_MSG_AUW  2560  4  
+[2023/07/12 23:05:23 218] isr_1conn  289  send_ok_num, timer_num, send_average =   25620  34  753  
+[2023/07/12 23:05:23 219] isr_1conn  292  netperf =   70  
+[2023/07/12 23:05:23 274] isr_1conn  2037 ASR_CLOUD_MSG_SSE  
+[2023/07/12 23:05:23 278] isr_1conn  1276 isr_1conn session info  
+[2023/07/12 23:05:23 283] isr_1conn  2180 session finished! ret =   0  

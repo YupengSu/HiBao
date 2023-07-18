@@ -1,0 +1,68 @@
+============================================================
+Time  2023/07/18 13:15:24 272 
+============================================================
+[2023/07/18 13:15:24 273] isr_1conn  2211 SYS_MSG_LOAD_CLOUD  
+[2023/07/18 13:15:24 274] isr_1conn  2232 SYS_MSG_REGCB_CLOUD param0 =   msp_status_cb  param1 =  func(b224a808) 
+[2023/07/18 13:15:24 277] isr_1conn  2232 SYS_MSG_REGCB_CLOUD param0 =   cloud_rslt_cb  param1 =  func(b2244318) 
+[2023/07/18 13:15:24 279] isr_1conn  2232 SYS_MSG_REGCB_CLOUD param0 =   cloud_err_cb  param1 =  func(b22443d8) 
+[2023/07/18 13:15:24 281] isr_1conn  2232 SYS_MSG_REGCB_CLOUD param0 =   cloud_status_cb  param1 =  func(b2244438) 
+[2023/07/18 13:15:24 284] isr_1conn  1411 onesoc  
+[2023/07/18 13:15:24 284] isr_1conn  1412 ASR_CLOUD_MSG_SSB  
+[2023/07/18 13:15:24 286] isr_1conn  1427 isr_1conn  cloud_cisr1PdHHBHvVJ6+MhCOa1l4OwgFWHS5n7c  268436457  1643074006  
+[2023/07/18 13:15:24 287] isr_1conn  1497 req_lgi_id =  d18657010834@cdd053ec  
+[2023/07/18 13:15:24 288] isr_1conn  1631 nil  
+[2023/07/18 13:15:24 289] isr_1conn  1690 speex-wb  
+[2023/07/18 13:15:24 290] isr_1conn  1770 net_once_bytes  nil  
+[2023/07/18 13:15:24 290] isr_1conn  1775 need_encode  true  
+[2023/07/18 13:15:24 291] isr_1conn  1777 once bytes  122  
+[2023/07/18 13:15:24 293] isr_1conn  1801 User set url is   nil  
+[2023/07/18 13:15:24 294] transport  642  paramkvsport is   nil  
+[2023/07/18 13:15:24 295] transport  654  ns_enable=  1  
+[2023/07/18 13:15:24 296] transport  656  2017-08--24 is_ns_need_close =   nil  
+[2023/07/18 13:15:24 297] transport  662  net.nettype=  standard  
+[2023/07/18 13:15:24 298] transport  672  url.full=  nil  
+[2023/07/18 13:15:24 299] transport  673  urltmp=  nil  
+[2023/07/18 13:15:24 300] transport  677  server_url_host=, server_url_port=, server_url_path=  open.xf-yun.com  nil  /msp.do  
+[2023/07/18 13:15:24 301] transport  705  url.full=  nil  
+[2023/07/18 13:15:24 301] transport  902  net type:  standard  
+[2023/07/18 13:15:24 302] transport  903  net operator:  def  
+[2023/07/18 13:15:24 303] transport  904  use proxy:  false  
+[2023/07/18 13:15:24 304] transport  1102 session.domain=  open.xf-yun.com  
+[2023/07/18 13:15:24 305] transport  1103 url.host=  open.xf-yun.com  
+[2023/07/18 13:15:24 306] transport  1142 using nameserver ip:  121.37.220.137  
+[2023/07/18 13:15:24 307] transport  1298 [soc] connect   121.37.220.137  80  
+[2023/07/18 13:15:24 313] transport  1310 mspsoc.open,prot_type=  tcp  
+[2023/07/18 13:15:24 461] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  1  
+[2023/07/18 13:15:24 462] isr_1conn  1845 €ôÿ  õÿ  
+[2023/07/18 13:15:24 615] isr_1conn  262  netperf:  92  
+[2023/07/18 13:15:24 657] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:24 661] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:24 857] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:24 859] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:24 916] isr_1conn  262  netperf:  83  
+[2023/07/18 13:15:25 057] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 060] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 217] isr_1conn  262  netperf:  74  
+[2023/07/18 13:15:25 256] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 258] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 457] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 459] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 518] isr_1conn  262  netperf:  64  
+[2023/07/18 13:15:25 656] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 658] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 818] isr_1conn  262  netperf:  55  
+[2023/07/18 13:15:25 857] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:25 858] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 056] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 058] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 120] isr_1conn  262  netperf:  46  
+[2023/07/18 13:15:26 256] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 258] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 420] isr_1conn  262  netperf:  37  
+[2023/07/18 13:15:26 456] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 458] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 656] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 658] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 721] isr_1conn  262  netperf:  28  
+[2023/07/18 13:15:26 856] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/18 13:15:26 862] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  

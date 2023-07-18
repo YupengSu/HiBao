@@ -1,0 +1,519 @@
+[2023/07/16 19:44:03 160] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 160] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 161] transport  479  [soc] [1] send ok  710  
+[2023/07/16 19:44:03 161] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 161] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 161] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 161] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 161] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 163] isr_1conn  1201 [session] send 43th audio  
+[2023/07/16 19:44:03 163] isr_1conn  1203 totalsz =   366  
+[2023/07/16 19:44:03 163] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 163] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 163] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 163] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 164] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 164] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 164] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 164] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 164] transport  1353 build http request.  
+[2023/07/16 19:44:03 164] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ21k535HHNpvpS^kcSf38ENs=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+◊≈B|ÏëÉÇÑ⁄⁄Ç“é	¬Õ0Ï|òWuõÇ‡ÿÁrÄZBàÉ–>©¯I Rõ°Ê˙/õÿ3∏+0^U^C‹e#NõƒO+oçøE˜€4í«¥-‡ÅΩΩ+´åk◊ª2*ÃÜÄ_¯‹Äm((RöÀk\d˚Û•äZAÓU\≠§œÉØHï§Ö£∑÷¯L)„ÄT2€≤Ú–¶x;0vgÂ∆}:‚cRò≠vÍ*e€µ…‰“nU^CÊa óﬁ ËÉP  
+[2023/07/16 19:44:03 167] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 167] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 167] transport  479  [soc] [1] send ok  830  
+[2023/07/16 19:44:03 168] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 168] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 168] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 168] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 168] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 208] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 209] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 151
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 153
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ2w5^WQYQyQCOS^kcSf38ENs=  
+[2023/07/16 19:44:03 209] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 209] transport  1594 is_update  true  
+[2023/07/16 19:44:03 209] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 209] isr_1conn  403  size =   244  
+[2023/07/16 19:44:03 209] isr_1conn  435  response  
+[2023/07/16 19:44:03 209] isr_1conn  483  resp_syncid =  42  
+[2023/07/16 19:44:03 209] isr_1conn  580  42  0  0  1  
+[2023/07/16 19:44:03 259] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 260] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 202
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 204
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&eps=1&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ21k535HHNpvpS^kcSf38ENs=  
+[2023/07/16 19:44:03 260] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 260] transport  1594 is_update  true  
+[2023/07/16 19:44:03 261] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 261] isr_1conn  403  size =   366  
+[2023/07/16 19:44:03 261] isr_1conn  435  response  
+[2023/07/16 19:44:03 261] isr_1conn  483  resp_syncid =  43  
+[2023/07/16 19:44:03 261] isr_1conn  580  43  0  0  1  
+[2023/07/16 19:44:03 354] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 356] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 359] isr_1conn  1201 [session] send 44th audio  
+[2023/07/16 19:44:03 359] isr_1conn  1203 totalsz =   244  
+[2023/07/16 19:44:03 359] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 359] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 359] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 359] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 359] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 359] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 359] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 359] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 360] transport  1353 build http request.  
+[2023/07/16 19:44:03 360] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ280rApOWQqCxS^kcSf38ENs=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+›pv7+ëóªÎ0ï},[lƒrï7≈u¢⁄ÎºüåﬂSÚ∑˜è˙F≈oÉQ£P+ØàÍΩ(¿πÀ¢˛æU\µË' 6Ã  
+[2023/07/16 19:44:03 362] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 363] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 363] transport  479  [soc] [1] send ok  710  
+[2023/07/16 19:44:03 363] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 364] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 364] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 364] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 364] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 365] isr_1conn  1201 [session] send 45th audio  
+[2023/07/16 19:44:03 365] isr_1conn  1203 totalsz =   366  
+[2023/07/16 19:44:03 366] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 366] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 366] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 366] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 366] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 366] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 366] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 366] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 366] transport  1353 build http request.  
+[2023/07/16 19:44:03 367] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ2yqFeYiMJke8S^kcSf38ENs=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+»Ò¥6'¯ı,(@r&r“ÙˇúëkÀ6çxº∏õ
+}»?◊≠˜ì,ÄŒ)eîìRö‡#Í}>{‰?˚µnU^C‹e#wÏ!´ÍØAª^ûê>V·!b$D¨-≤b∆;ÓxˇÜÁ•.™\cRõ@ôªhÄÎf&˚KÓU\øáO#rwÔÑˆÜG‡ˆ2˘≈%Z"X{,"™ΩÛ≤-£Õãﬁ∑[©}I§ˇÁcRxH»˘T )°ËIﬂÓU\¶Èn#VGµ”!cä)›Æ™‰MË& ÇïT¡ö‘˘J$í†Âº ˜ﬂÙüiM#RôD˛∏muÀx…äû€{˜õëq$#)S@Ù› ö±œÃÏØöé‘%ù⁄T¶Õ„´oë[ìπ:æI∞óu~√Rö2ÆÍﬂl˙ËE™úˇ.U^C»`#6n$®DG÷dù]LÓ¡*·¸€]ç ï¶í«èøn⁄ØúOà»Ÿ$∏:¥„RöyÀ:pB˚≥  
+[2023/07/16 19:44:03 369] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 369] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 370] transport  479  [soc] [1] send ok  830  
+[2023/07/16 19:44:03 370] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 370] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 370] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 370] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 371] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 412] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 413] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 355
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 356
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ280rApOWQqCxS^kcSf38ENs=  
+[2023/07/16 19:44:03 413] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 413] transport  1594 is_update  true  
+[2023/07/16 19:44:03 413] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 413] isr_1conn  403  size =   244  
+[2023/07/16 19:44:03 413] isr_1conn  435  response  
+[2023/07/16 19:44:03 413] isr_1conn  483  resp_syncid =  44  
+[2023/07/16 19:44:03 413] isr_1conn  580  44  0  0  1  
+[2023/07/16 19:44:03 463] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 464] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 407
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 408
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ2yqFeYiMJke8S^kcSf38ENs=  
+[2023/07/16 19:44:03 464] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 464] transport  1594 is_update  true  
+[2023/07/16 19:44:03 465] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 465] isr_1conn  403  size =   366  
+[2023/07/16 19:44:03 465] isr_1conn  435  response  
+[2023/07/16 19:44:03 465] isr_1conn  483  resp_syncid =  45  
+[2023/07/16 19:44:03 465] isr_1conn  580  45  0  0  1  
+[2023/07/16 19:44:03 480] isr_1conn  289  send_ok_num, timer_num, send_average =   14640  11  1330  
+[2023/07/16 19:44:03 481] isr_1conn  292  netperf =   90  
+[2023/07/16 19:44:03 552] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 554] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 557] isr_1conn  1201 [session] send 46th audio  
+[2023/07/16 19:44:03 557] isr_1conn  1203 totalsz =   244  
+[2023/07/16 19:44:03 557] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 557] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 557] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 557] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 557] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 558] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 558] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 558] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 558] transport  1353 build http request.  
+[2023/07/16 19:44:03 558] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ298rCufNPX5XS^kcSf38ENs=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+˝!}AU≠qi.4±~ßl˙;2óIÂbqŸK{n¥EåñB«ô∫øÇD¡á5u7≥Q®ÂiÔø‚¶âåvﬁU\ØÜC ?ûÊÙæÃÏAﬂÚ…ÚÌ«b◊G±	4ˆ®Gv]˘™&ã%Êü≤ÖáM™/·#RôD]k8:Ë≠x+U.U]I¶Ω@Ë. ÔH∞ñ«Oùt¡Ô'åÅ¬∏ªzµc>H+∂åøx·Gáa™O≥QEB+f"˚&∏:ÈéU^Dûe#êv∞aûgb:f÷€É≤{§ÎÏ(Ú⁄˚–8\Üó3~î6˛ë$·÷≥S;ÿi¬€ØbÇhRË9¯lM  
+[2023/07/16 19:44:03 560] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 561] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 561] transport  479  [soc] [1] send ok  710  
+[2023/07/16 19:44:03 561] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 562] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 562] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 562] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 562] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 563] isr_1conn  1201 [session] send 47th audio  
+[2023/07/16 19:44:03 563] isr_1conn  1203 totalsz =   366  
+[2023/07/16 19:44:03 563] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 563] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 563] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 564] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 564] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 564] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 564] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 564] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 564] transport  1353 build http request.  
+[2023/07/16 19:44:03 564] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ20/wu9awZzFYS^kcSf38ENs=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+N!≠AW,eÀÄÜ5±ù3Ú‚~œÊ‚M˙Íƒ∞ùˇkr!ï√ãºtvA…4#P(*˚X™z>z  
+[2023/07/16 19:44:03 567] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 567] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 568] transport  479  [soc] [1] send ok  830  
+[2023/07/16 19:44:03 568] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 568] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 568] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 568] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 569] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 616] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 617] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 560
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 561
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ298rCufNPX5XS^kcSf38ENs=  
+[2023/07/16 19:44:03 617] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 617] transport  1594 is_update  true  
+[2023/07/16 19:44:03 617] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 617] isr_1conn  403  size =   244  
+[2023/07/16 19:44:03 617] isr_1conn  435  response  
+[2023/07/16 19:44:03 617] isr_1conn  483  resp_syncid =  46  
+[2023/07/16 19:44:03 618] isr_1conn  580  46  0  0  1  
+[2023/07/16 19:44:03 678] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 678] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 611
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 613
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ20/wu9awZzFYS^kcSf38ENs=  
+[2023/07/16 19:44:03 679] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 679] transport  1594 is_update  true  
+[2023/07/16 19:44:03 679] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 679] isr_1conn  403  size =   366  
+[2023/07/16 19:44:03 679] isr_1conn  435  response  
+[2023/07/16 19:44:03 679] isr_1conn  483  resp_syncid =  47  
+[2023/07/16 19:44:03 679] isr_1conn  580  47  0  0  1  
+[2023/07/16 19:44:03 753] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 756] isr_1conn  1828 ASR_CLOUD_MSG_AUW  3200  2  
+[2023/07/16 19:44:03 757] isr_1conn  1828 ASR_CLOUD_MSG_AUW  640  4  
+[2023/07/16 19:44:03 758] isr_1conn  1201 [session] send 48th audio  
+[2023/07/16 19:44:03 758] isr_1conn  1203 totalsz =   244  
+[2023/07/16 19:44:03 759] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 759] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 759] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 759] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 759] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 759] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 759] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 759] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 759] transport  1353 build http request.  
+[2023/07/16 19:44:03 760] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ22flnNaHRLbxS^kcSf38ENs=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+6’Ö‰^QÖ0néŸ™1r¥Â:_4q ï'"ï÷÷ä
+¡W⁄[Åª∞
+M“tÔ≥Rò!Ñx ·ÍEI
+kôNU^Dƒf Wﬁ#T«+—O/ÿVˆ•©V="o»ûèkë~$∏,€WÇ8?•ﬁ‰3RöÈ˘K €õk‰xsìNU\≠∏mÄ…v)%'˜<‡zl¨äÉ¿q4  
+[2023/07/16 19:44:03 762] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 762] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 763] transport  479  [soc] [1] send ok  710  
+[2023/07/16 19:44:03 763] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 763] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 763] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 764] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 764] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 765] isr_1conn  1173 no_audio is true  
+[2023/07/16 19:44:03 765] isr_1conn  1201 [session] send 49th audio  
+[2023/07/16 19:44:03 765] isr_1conn  1203 totalsz =   427  
+[2023/07/16 19:44:03 765] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 766] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 766] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 766] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 766] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 766] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 766] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 766] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 766] transport  1353 build http request.  
+[2023/07/16 19:44:03 766] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 713
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=4&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ25F4BHT/H6UxS^kcSf38ENs=
+----
+CL:432
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ˇ•À,ÜøùX|∞ÛLÅEvŸSê–’î’Ú›¿$∂pDö2z›„&íHi%∞2|º„P≠°-MdÂJ∑8‚¥>U\±˜NÉÄ´å5‡a£%7Ú˛ÏáVﬁ,Ã¿Dº°ÒPïØSüä˜wàñ\C∏ QS˙ ¢ΩßmŸÁ›Y‰ÓU^Cø¨c∂öM`–ø!ÂíVﬂ2ƒÔ‰~6Í;∫Dæ:?YzGY/◊#ÅWq˝"≥R*V!Ë#AHZ	€üNU\Ø∆Ã@¬^€†Y˚“Êr1vƒ›Øª\•Z¡™æIÜ≥îÆx,Áõ1NZÑ(FsSxØ!KQIŸ¿Vπ›KÁﬂ¯Ó%ﬁ≥ ˘ÄMùÜ/GâzÅXg/K>—µ$˜îπÂ£ÜmÄıÃB}ıÇó√SÀK€~>ª*8i`·ÓUY∞øB?ú-˜Ïsâá‰53î-Q¬$l
+˜fΩ‡¶ÉB;Èƒâ∏ˇ∞•‹$¥ì—;´R+Y…J…ÂK’#ûU^¯ûGŒ«Â¥Rﬁ]∂Ad“˛MrLä∂–Î¬Á≠@pÏŸìîa¬?6Â‡ÍT`À” è|;AB˚ác˚ch.´  
+[2023/07/16 19:44:03 769] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 769] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 769] isr_1conn  1229 [session] send last audio!  
+[2023/07/16 19:44:03 769] isr_1conn  1247 send rslt request  
+[2023/07/16 19:44:03 770] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 770] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 770] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 770] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 770] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 770] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 770] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 770] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 770] transport  1353 build http request.  
+[2023/07/16 19:44:03 771] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: text/plain
+Content-Length: 168
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+ver=MSSP+0%2E9&sub=iat&cmd=grs&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ2wS34sJRoai9S^kcSf38ENs=  
+[2023/07/16 19:44:03 772] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 773] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 775] transport  479  [soc] [1] send ok  886  
+[2023/07/16 19:44:03 775] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 775] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 775] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 775] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 775] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 776] transport  479  [soc] [1] send ok  324  
+[2023/07/16 19:44:03 776] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 776] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 776] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 777] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 777] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 820] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 820] transport  1756 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 181
+X-Req-Date: 2023/07/16 19:44:03 765
+CL: 181
+X-Res-Date: 2023/07/16 19:44:03 767
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&cver=5%2E0%2E38%2E1195&eps=1&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ22flnNaHRLbxS^kcSf38ENs=  
+[2023/07/16 19:44:03 821] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 821] transport  1594 is_update  true  
+[2023/07/16 19:44:03 821] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 821] isr_1conn  403  size =   244  
+[2023/07/16 19:44:03 821] isr_1conn  435  response  
+[2023/07/16 19:44:03 821] isr_1conn  483  resp_syncid =  48  
+[2023/07/16 19:44:03 821] isr_1conn  580  48  0  0  1  
+[2023/07/16 19:44:03 821] isr_1conn  1247 send rslt request  
+[2023/07/16 19:44:03 822] transport  1849 transport_obj.send | in  
+[2023/07/16 19:44:03 822] transport  1855 self.msg_flag_q  table(b2156540) 
+[2023/07/16 19:44:03 822] transport  1856 self.msg_q  table(b2156510) 
+[2023/07/16 19:44:03 822] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 822] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 822] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 822] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 822] transport  1808 transport:try2send,#msg_q=  1  
+[2023/07/16 19:44:03 822] transport  1353 build http request.  
+[2023/07/16 19:44:03 823] transport  1466 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: text/plain
+Content-Length: 168
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+ver=MSSP+0%2E9&sub=iat&cmd=grs&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ2//91PkS4LJ0S^kcSf38ENs=  
+[2023/07/16 19:44:03 824] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 824] transport  1862 transport_obj.send | out  
+[2023/07/16 19:44:03 824] transport  479  [soc] [1] send ok  324  
+[2023/07/16 19:44:03 825] transport  1788 transport_obj.try2send | in  
+[2023/07/16 19:44:03 825] transport  1789 self.soc  udata(b211fe78) 
+[2023/07/16 19:44:03 825] transport  1790 self.connected  true  
+[2023/07/16 19:44:03 825] transport  1791 self.latesterr  0  
+[2023/07/16 19:44:03 825] transport  1808 transport:try2send,#msg_q=  0  
+[2023/07/16 19:44:03 882] isr_1conn  289  send_ok_num, timer_num, send_average =   15494  12  1291  
+[2023/07/16 19:44:03 882] isr_1conn  292  netperf =   90  
+[2023/07/16 19:44:03 922] transport  491  [soc] [1] readable  
+[2023/07/16 19:44:03 923] transport  1756 HTTP/1.1 200 OK
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 309
+X-Req-Date: 2023/07/16 19:44:03 820
+CL: 309
+X-Res-Date: 2023/07/16 19:44:03 824
+
+----
+CT:text/plain
+CL:187
+
+ver=MSSP+0%2E9&ret=0&uid=d18657010834&rss=5&eps=3&cver=5%2E0%2E38%2E1195&key=0fMgCZerUo03vjUUAFMIBpT80GiROsDD19G6teijpEHY4^HBywnTxKrYa4XMg2oYMStQy8j/bqXoZL6RxJ/fwQ25F4BHT/H6UxS^kcSf38ENs=
+----
+CT:binary/recresult;charset=utf8
+CE:encrypt/0.2
+CL:16
+
+ÁBµ=»WH  
+[2023/07/16 19:44:03 923] transport  1484 a_complete_httpmessage  200  
+[2023/07/16 19:44:03 923] transport  1594 is_update  true  
+[2023/07/16 19:44:03 923] isr_1conn  399  [trans] [isr_1conncisr1PdHHBHv+hZRMlCKaww3ydHUPk11dHec] readable  
+[2023/07/16 19:44:03 923] isr_1conn  403  size =   427  
+[2023/07/16 19:44:03 923] isr_1conn  412  send_ok_num, timer_num, send_average =   15921  13  1224  
+[2023/07/16 19:44:03 924] isr_1conn  415  netperf =   90  
+[2023/07/16 19:44:03 924] isr_1conn  419  start netperf_grs_timer  
+[2023/07/16 19:44:03 924] isr_1conn  435  response  
+[2023/07/16 19:44:03 924] isr_1conn  483  resp_syncid =  49  
+[2023/07/16 19:44:03 925] isr_1conn  655  49  5  0  
+[2023/07/16 19:44:03 925] isr_1conn  662  [session] got last result  
+[2023/07/16 19:44:03 925] isr_1conn  667  time from last audio to last result:  156  .  
+[2023/07/16 19:44:03 925] isr_1conn  668  time from session-begin to session-end:  5319  .  
+[2023/07/16 19:44:03 928] network    90   ipfromenv ,  ipcache  open.xf-yun.com  def  121.37.220.137  
+[2023/07/16 19:44:03 928] transport  976  cached ip is confirmed  
+[2023/07/16 19:44:03 928] transport  1326 [soc] disconnect   
+[2023/07/16 19:44:03 928] transport  986  transport clean  
+[2023/07/16 19:44:03 929] isr_1conn  677  [session] got 2th result  
+[2023/07/16 19:44:04 324] isr_1conn  273  netperf_grs =   80  
+[2023/07/16 19:44:04 725] isr_1conn  273  netperf_grs =   70  
+[2023/07/16 19:44:05 125] isr_1conn  273  netperf_grs =   60  
+[2023/07/16 19:44:05 526] isr_1conn  273  netperf_grs =   50  
+[2023/07/16 19:44:05 825] isr_1conn  1239 grslt timeout  
+[2023/07/16 19:44:05 825] isr_1conn  1247 send rslt request  
+[2023/07/16 19:44:05 926] isr_1conn  273  netperf_grs =   40  
+[2023/07/16 19:44:06 327] isr_1conn  273  netperf_grs =   30  
+[2023/07/16 19:44:06 729] isr_1conn  273  netperf_grs =   20  
+[2023/07/16 19:44:07 129] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:07 530] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:07 930] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:08 331] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:08 732] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:09 132] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:09 533] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:09 933] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:10 334] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:10 734] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:11 135] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:11 536] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:11 937] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:12 338] isr_1conn  273  netperf_grs =   10  
+[2023/07/16 19:44:12 738] isr_1conn  273  netperf_grs =   10  
