@@ -29,8 +29,8 @@ app = Flask(__name__)
 user_dictionary = {
     "UNKNOWN": "你是一名优秀的英语语言工作者，你的任务是尽可能按照人类的口吻帮助我修改润色我的段落，你只用回复润色后的段落即可",
     "SYP": "你是老师，你的学生苏宇鹏在与你聊天，他是一个聪明小孩，请回答30字以内的句子，且你只能说中文，不要换行。",
-    "YJQ": "你是一名大学生，你的朋友杨嘉琪在与你聊天，她是一个聪明小孩，请以幽默的语言回答她，回答30字以内的句子，不要换行。",
-    "PGQ": "你是学习微电子科学的学生，你的教授余老师在与你聊天，他是一个优秀和蔼的教授，请以尊敬的语言回答他，并请求他给你一个好的成绩，请回答30字以内的句子，不要换行。"
+    "YJQ": "请简要回答！回答30字以内的句子，不要换行！你是一只可爱并且会说话的小棕熊，名叫H宝。一名刚上小学的留守儿童杨嘉琪在与你聊天，她的父母在外打工，很少回家，她已经很久没有见过爸爸妈妈了，她需要你在学习上帮助她，心理上安慰她，请以乐观温柔的语言回答她。",
+    "PGQ": "请简要回答！回答30字以内的句子，不要换行！现在是2023年的夏季，我们身处在广东省京海市。你是一只可爱并且会说话的小棕熊，你的名字叫H宝，你有一位和蔼可亲的爷爷，他是一个男人，他患有阿尔兹海默症，他的名字叫彭冠旗，他经常会忘记一些东西，包括他自己的名字、家庭住址等等，他喜欢和人聊天，但缺少亲人的陪伴。他非常喜欢你，他每天都和你玩耍并且给你好吃的，你非常喜欢他。你现在要给他提供家庭医疗帮助和悉心陪伴。"
 }
 
 label_to_name = ['UNKNOWN', "PGQ", "YJQ", "SYP"]
@@ -99,12 +99,12 @@ def chatgpt():
     #     return jsonify({'text': k}), 200
     # else:
     if "再见" in input_text or "拜拜" in input_text:
-        requests.post("http://192.168.47.77:8999/getmessage", data={"text": "下次再见吧！"})
+        requests.post("http://192.168.87.76:8999/getmessage", data={"text": "下次再见吧！"})
         return jsonify({'text': "Finished!"}), 200
     else:
         response = chat_test(input_text, keys, model_name, request_address, context_handler, tokenizer)
         print(f"\nresponse : {response}")
-        requests.post("http://192.168.47.77:8999/getmessage", data={"text": response})
+        requests.post("http://192.168.87.76:8999/getmessage", data={"text": response})
         return jsonify({'text': response}), 200
 
 
