@@ -66,9 +66,9 @@
 
 整体介绍
 
-![image](./HiBao/Picture/程序框图.png)
+ ![](https://github.com/YupengSu/HiBao/blob/main/Picture/%E7%A8%8B%E5%BA%8F%E6%A1%86%E5%9B%BE.png)
 
- 
+
 
 1.2  各模块介绍
 
