@@ -1,3 +1,5 @@
+<img src="/Users/suyupeng/Documents/GitHub/HiBao/Picture/logo.png" alt="logo" style="zoom:50%;" />
+
 # HiBao: 您的智能语音助手
 
 > 海思嵌入式芯片和系统设计竞赛
@@ -5,7 +7,6 @@
 > 队员: 彭冠旗, 杨嘉琪, 苏宇鹏.
 >
 > 指导老师: 余浩, 罗少波.
->
 
 ## 设计概述
 
@@ -49,7 +50,9 @@
 2. 红外检测模块可以较灵敏的识别前方2米内有无遮挡和运动的物体；温湿度测量模块可以正确返回当前环境状况，其中温度测量误差不超过1℃，湿度测量误差不超过5%。
 3. 科大讯飞语音模块在处理较长的普通话文本时正确率最高，无错听误听情况。
 4. GPT-3.5返回回答的延迟时间不超过5秒钟。为确保获取回答，提高个性化程度，增加联系语境能力，降低返回延迟，软件代码已做处理。
-5. 其他控制如语音播报、RGB灯条等控制均无误；串口传输及网络通信稳定。系统功能全面，为用户提供高效的智能控制体验。
+5. 其他控制如语音播报、RGB灯条等控制均无误；串口传输及网络通信稳定。
+
+系统功能全面，为用户提供高效的智能控制体验。
 
 ### 主要创新点
 
@@ -67,7 +70,7 @@
 
 #### 程序框图
 
-![](Picture/%E7%A8%8B%E5%BA%8F%E6%A1%86%E5%9B%BE.png)
+![](Picture/程序框图.png)
 
 #### 文件树状图
 
@@ -284,8 +287,23 @@ hi_void IotPublishSample(void)
 **模型训练：**
 
 1. 数据集采集
+   人脸检测选用FDDB公开数据集，使用约7000张图片作为训练集，约2000张图片作为测试集；人脸识别数据集为Taurus视频录入，选取本组三位队员的人脸模型，视频每0.5秒截取一次，每位队员约有3000张训练图片。
+
 2. 数据集预处理
+   检测网：将FDDB数据集标签通过python脚本文件处理为可以投入darknet网络模型训练的格式，并随机分为训练集和测试集。
+   分类网：为了避免数据受周围环境造成影响，利用opencv对人脸图像进行裁剪，并手工进行标注。
+
 3. 模型训练
+   将处理过的数据集投入服务器进行训练，其中，检测网选用YOLO v2网络模型，分类网选用Resnet 18网络模型。将经过训练后生成的darknet模型转换为caffe模型并在本地进行模型量化处理，最后，将权重文件部署到板端进行调试。
+
+4. **检测网结果：**
+
+   ![分类网](Picture/分类网.jpg)
+
+5. **分类网结果：**
+
+   ![检测网](Picture/检测网.jpg)
+
 
 **板端部署：**
 
@@ -595,6 +613,10 @@ H 宝现已实现三种通讯同时进行：**串口进行的板端通信，HTTP
 最后，一个整体项目的实现需要组内成员的分工合作。这既需要组内成员的团结信任，也需要充分利用github、TODO等合作工具。
 
 ## 参考文献
+
+[1] Jain V, Learned-Miller E. Fddb: A benchmark for face detection in unconstrained settings[R]. UMass Amherst technical report, 2010.
+
+[2] Taecharungroj V. “What Can ChatGPT Do?” Analyzing Early Reactions to the Innovative AI Chatbot on Twitter. Big Data and Cognitive Computing. 2023; 7(1):35. https://doi.org/10.3390/bdcc7010035
 
 ## 附录
 
@@ -1686,8 +1708,4 @@ exit:
 	MSPLogout(); // Logout...
 
 	return 0;
-}
 ```
-
-
-
