@@ -287,177 +287,9 @@ hi_void IotPublishSample(void)
 
 > 此项目参考 Github 项目：[ChristopheZhao/ChaGPT-API-Call: Python calls ChatGPT API, multi-turn dialogue support (github.com)](https://github.com/ChristopheZhao/ChaGPT-API-Call)
 
-**Class `Context_handler`**
-
-```python
-class ContextHandler(object):
-    def __init__(self, max_context=3200, context_del_config=None):
-        super().__init__()
-        self.context = []
-        self.role_lengths = []
-        self.max_context = max_context
-
-        # the config of del context
-        self.context_del_config = context_del_config
-
-    def append_cur_to_context(self, data, complete__length, tag=0):
-
-        if tag == 0:
-            role = "user"
-        elif tag == 1:
-            role = "assistant"
-        else:
-            role = "system"
-
-        role_data = {"role": role, "content": data}
-        self.context.append(role_data)
-        self.role_lengths.append(complete__length)
-
-    def cut_context(self, cur_total_length, tokenizer):
-        if self.context_del_config:
-            del_context(self.context, self.role_lengths, cur_total_length, self.max_context,
-                        tokenizer=tokenizer,
-                        distance_weights=self.context_del_config.distance_weights,
-                        length_weights=self.context_del_config.length_weights,
-                        role_weights=self.context_del_config.role_weights,
-                        sys_role_ratio=self.context_del_config.sys_role_ratio,
-                        del_ratio=self.context_del_config.del_ratio,
-                        max_keep_turns=self.context_del_config.max_keep_turns,
-                        )
-        # use the default pram
-        else:
-            del_context(self.context, self.role_lengths, cur_total_length, self.max_context, tokenizer=tokenizer)
-
-    def clear(self):
-        self.context.clear()
-```
-
-其中包含两个方法：
-
-* `append_cur_to_context `：将当前文本添加到总文本中，并标注主体 (1 : 用户，2 : 助手，3 : 系统)
-* `cut_context`：对总文本进行裁剪，以保证一次输入的总文本长度在一定范围之内。
-* 注意：总文本的意思是所有轮次对话（用户端与助手端）加上系统端指令之和。
-
-**Class `tokenizer`**
-
-```python
-class Tokennizer(object):
-
-    def __init__(self,model_name):
-        super().__init__()
-        self.encoding = tiktoken.encoding_for_model(model_name)
-
-    def num_tokens_from_string(self,query_string: str) -> int:
-        """Returns the number of tokens in a text string."""
-        num_tokens = len(self.encoding.encode(query_string))
-        return num_tokens
-```
-
-**Function `del_context`**
-
-```python
-def del_context(dialogue_context,dialogue_lengths,cur_total_length,max_length,tokenizer,
-                distance_weights=0.05,
-                length_weights=0.4,
-                role_weights=1,
-                sys_role_ratio=3,
-                del_ratio = 0.4,
-                max_keep_turns=30,
-                ):
-    dia_nums = len(dialogue_context)
-
-    #if the dia_nums exceeded max_keep_turns turns,del the oldest dia
-
-    sys_role_weights = role_weights * sys_role_ratio
-
-    is_cut_finished = False
-    while dia_nums > max_keep_turns:
-        index = 0
-        
-        while dialogue_context[index]['role'] == 'system':
-            index += 1
-        
-        dialogue_context.pop(index)
-
-        cur_pop_length = dialogue_lengths[index]
-        dialogue_lengths.pop(index)
-
-        cur_total_length -= cur_pop_length
-
-        dia_nums -= 1
-
-        if cur_total_length <= max_length:
-            is_cut_finished = True
-            break
-
-    if is_cut_finished:
-        return dialogue_context, dialogue_lengths
-
-    del_score_list = []
-    for dia_id in range(dia_nums):
-        distance = dia_nums - dia_id
-        length = dialogue_lengths[dia_id]
-        content = dialogue_context[dia_id]
-
-        if content['role'] == 'assistant':
-            cal_role_weights = sys_role_weights
-        elif content['role'] == 'system':
-            cal_role_weights = pre_role_weights
-        else:
-            cal_role_weights = role_weights
-
-        dia_score = (distance * distance_weights + length / max_length * length_weights) * cal_role_weights
-        del_score_list.append(dia_score)
-
-    del_indexes = argsort(del_score_list, reverse=True)
-
-    del_id = 0
-    while cur_total_length > max_length:
-
-        if del_id == dia_nums - 1:
-            raise Exception("the remain dialogue after context cutting still too long")
-
-        del_dia = dialogue_context[del_indexes[del_id]]
-        del_dia_length = dialogue_lengths[del_indexes[del_id]]
-
-        exceed_num = cur_total_length - max_length
-        # delete the del_ratio numbers at most for each dialogue
-        ch_del_dia_len = len(del_dia['content'])
-        if exceed_num/del_dia_length < del_ratio:
-            # +2 for token "/n"
-            del_st_index = int((exceed_num/del_dia_length)*ch_del_dia_len)+2
-        else:
-            del_st_index = int(del_ratio*ch_del_dia_len)
-
-        deleted_dia = del_dia['content'][del_st_index:]
-        deleted_dia_length = tokenizer.num_tokens_from_string(deleted_dia)
-
-        cur_total_length -= (del_dia_length - deleted_dia_length)
-
-        dialogue_context[del_indexes[del_id]]['content'] = deleted_dia
-        dialogue_lengths[del_indexes[del_id]] = deleted_dia_length
-
-        del_id += 1
-
-    return dialogue_context,dialogue_lengths
-```
-
-**该方法执行两种判断**：
-
-1. 如果对话的总轮次超过了最大的轮次，则删减掉最先前的轮次。
-
-2. 如果对话的总句柄数大于预设的最大数，则根据公式：
-   $$
-   Score = (distance \times W_{distance} + \frac{length}{length_{max}}\times W_{length}) \times W_{calRole}
-   $$
-   从小到大排序分数，删除分数最小的对话直到总句柄数小于最大数。
-
-3. 此中三种角色的权重占比为：
-   $$
-   User:Assistant:System=1:3:10
-   $$
-
 **个性化字典：**
+
+在 chatGPT 服务端引入个性化字典，基于不同用户给 chatGPT 输入不同的预设场景，使 chatGPT 的回答更个性化与定制化。
 
 ```python
 user_dictionary = {
@@ -470,51 +302,9 @@ user_dictionary = {
 label_to_name = ['UNKNOWN', "PGQ", "YJQ", "SYP"]
 ```
 
-**chat 调用函数**
-
-```python
-def chat_test(input_s, keys, model_name, request_address, context_handler, tokenizer, log_time=True, context_max=3200):
-    requestor = OpenAI_Request(keys, model_name, request_address)
-    # if input_s == "clear":
-    #     context_handler.clear()
-    #     print('start a new session')
-    #     continue
-    # else:
-    inputs_length = tokenizer.num_tokens_from_string(input_s)
-    context_handler.append_cur_to_context(input_s, inputs_length)
-
-    st_time = time.time()
-    res = requestor.post_request(context_handler.context)
-    ed_time = time.time()
-    response = ""
-    if res.status_code == 200:
-
-        response = res.json()['choices'][0]['message']['content']
-        # cut \n for show
-        response = response.lstrip("\n")
-
-        completion_length = res.json()['usage']['completion_tokens']
-        total_length = res.json()['usage']['total_tokens']
-
-        context_handler.append_cur_to_context(response, completion_length, tag=1)
-        if total_length > context_max:
-            context_handler.cut_context(total_length, tokenizer)
-        print(context_handler.context)
-
-    else:
-        status_code = res.status_code
-        reason = res.reason
-        des = res.text
-        raise print(f'visit error :\n status code: {status_code}\n reason: {reason}\n err description: {des}\n '
-                    f'please check whether your account  can access OpenAI API normally')
-
-    if log_time:
-        print(f'time cost : {ed_time - st_time}')
-
-    return response
-```
-
 **建立 flask 服务端**
+
+在 PC 端建立基于 HTTP 的 flask 服务端，使 PC 可以将对话信息上报与下发。
 
 ```python
 @app.route('/chatgpt', methods=['POST'])
@@ -559,174 +349,98 @@ if __name__ == '__main__':
 串口通信模块采用状态机架构，共有三种状态：
 
 * `STATE_INFRARED`： 红外检测状态，当P板传入有人体活动时，播报相应语音，开启T板。
+
+  * 若为**人体红外模块输入**：
+
+  ```python
+  if index == 0:
+      STATE = STATE_RECONGNIZE
+  
+      speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
+      speech.SetVolume(10)
+      speech.Speech_text("主人，我看到你了！", speech.EncodingFormat_Type["GB2312"])
+      while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
+          time.sleep(0.1)
+  
+      # open the recognition
+      ser_T2.write(str.encode("cd userdata/\n"))
+      time.sleep(0.5)
+      ser_T2.write(str.encode("./myapp 1\n"))
+  
+      print("Open Successful!")
+  ```
+
+  * 若为微信小程序**“寻找H宝”输入**
+
+  ```python
+  elif index == 1:
+      # find Hibao
+      os.system("sudo pkill -9 -f green_breath.py")
+      os.system("sudo pkill -9 -f blue_speak.py")
+      os.system("sudo pkill -9 -f change_color.py")
+      os.system("sudo pkill -9 -f red_spark.py")
+      os.system("sudo python3 ~/HiBao_Project/RGB_Demo/set_none.py")
+      os.popen("bash ~/HiBao_Project/RGB_Demo/red_spark.sh")
+  
+      speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
+      speech.SetVolume(10)
+      speech.Speech_text("主人，我在这里！", speech.EncodingFormat_Type["GB2312"])
+      while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
+          time.sleep(0.1)
+      time.sleep(1)
+  ```
+
+  * 若为微信小程序**“欢迎回家”输入**
+
+  ```python
+  elif index == 2:
+      # welcome back
+      speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
+      speech.SetVolume(10)
+      speech.Speech_text("主人，欢迎回家！", speech.EncodingFormat_Type["GB2312"])
+      while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
+          time.sleep(0.1)
+  ```
+
 * `STATE_RECONGNIZE`：人脸识别状态，当T板传入用户信息时，并发送给PC端，关闭T板。
+
+  ```python
+  ser_T2.write(str.encode("\n"))
+  ser_T2.write(str.encode("\n"))
+  ser_T2.write(str.encode("cd .. \n"))
+  
+  print("Close Successful!")
+  
+  s = str(index).encode(encoding='UTF-8')
+  for i in range(20):
+      ser_P.write(s)
+  
+  print(requests.post("http://192.168.87.159:8999/changeUser",
+        data={"text": str(index)}).json()["text"])
+  
+  speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
+  speech.SetVolume(10)
+  speech.Speech_text(
+      "你好呀" + User_dict[str(index)] + "，我可以和你聊天！", speech.EncodingFormat_Type["GB2312"])
+  while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
+      time.sleep(0.1)
+  ```
+
 * `STATE_SPEAK`：语音对话状态，调用 iat_record 语音识别程序，进行对话
 
-```python
-# -*- coding: utf-8 -*
-import serial
-import time
-from Speech import Speech
-import os
-import requests
+  ```python
+  os.system('bash ~/HiBao_Project/02_iat_open.sh')
+  STATE = STATE_INFRARED
+  os.system("sudo pkill -9 -f green_breath.py")
+  os.system("sudo pkill -9 -f blue_speak.py")
+  os.system("sudo pkill -9 -f change_color.py")
+  os.system("sudo pkill -9 -f red_spark.py")
+  os.system("sudo python3 ~/HiBao_Project/RGB_Demo/set_none.py")
+  os.popen("bash ~/HiBao_Project/RGB_Demo/change_color.sh", "w")
+  time.sleep(20)
+  ```
 
-speech = Speech()
-
-STATE_INFRARED = 0
-STATE_RECONGNIZE = 1
-STATE_SPEAK = 2
-
-STATE = STATE_INFRARED
-
-ser_T1 = serial.Serial("/dev/ttyAMA0",115200)
-ser_T2 = serial.Serial("/dev/ttyUSB0",115200)
-ser_P = serial.Serial("/dev/ttyAMA2",9600)
-
-if not ser_T1.isOpen():
-    print("open failed")
-else:
-    print("open success: ")
-    print(ser_T1)
-
-if not ser_T2.isOpen():
-    print("open failed")
-else:
-    print("open success: ")
-    print(ser_T2)
-
-if not ser_P.isOpen():
-    print("open failed")
-else:
-    print("open success: ")
-    print(ser_P)
-
-count_p = [0,0,0]
-
-count_t = [0,0,0,0]
-
-User_dict = {
-    "0": "陌生人",
-    "1": "彭冠旗",
-    "2": "杨嘉琪",
-    "3": "苏宇鹏"
-}
-
-try:
-    os.system("sudo pkill -9 -f green_breath.py")
-    os.system("sudo pkill -9 -f blue_speak.py")
-    os.system("sudo pkill -9 -f change_color.py")
-    os.system("sudo pkill -9 -f red_spark.py")
-    os.system("sudo python3 ~/HiBao_Project/RGB_Demo/set_none.py")
-    os.popen("bash ~/HiBao_Project/RGB_Demo/change_color.sh","r")
-    while True:
-        if STATE == STATE_INFRARED:
-            rec0 = ser_P.read(1)
-            if(rec0==b'\xaa'):
-                recv = ser_P.read(7)
-                s = str(recv[1])
-                print(s)
-                count_p[int(s)-1] += 1
-                if (10 in count_p):
-                    index = count_p.index(10)
-                    if index == 0:
-                        STATE = STATE_RECONGNIZE
-
-                        speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
-                        speech.SetVolume(10)
-                        speech.Speech_text("主人，我看到你了！",speech.EncodingFormat_Type["GB2312"])
-                        while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
-                            time.sleep(0.1) 
-
-                        # open the recognition
-                        ser_T2.write(str.encode("cd userdata/\n"))
-                        time.sleep(0.5)
-                        ser_T2.write(str.encode("./myapp 1\n"))
-
-                        print("Open Successful!")
-                    elif index == 1:
-                        # find Hibao
-                        os.system("sudo pkill -9 -f green_breath.py")
-                        os.system("sudo pkill -9 -f blue_speak.py")
-                        os.system("sudo pkill -9 -f change_color.py")
-                        os.system("sudo pkill -9 -f red_spark.py")
-                        os.system("sudo python3 ~/HiBao_Project/RGB_Demo/set_none.py")
-                        os.popen("bash ~/HiBao_Project/RGB_Demo/red_spark.sh")
-                        
-                        speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
-                        speech.SetVolume(10)
-                        speech.Speech_text("主人，我在这里！",speech.EncodingFormat_Type["GB2312"])
-                        while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
-                            time.sleep(0.1) 
-                        time.sleep(1)
-                    elif index == 2:
-                        # welcome back
-                        speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
-                        speech.SetVolume(10)
-                        speech.Speech_text("主人，欢迎回家！",speech.EncodingFormat_Type["GB2312"])
-                        while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
-                            time.sleep(0.1) 
-                    else:
-                        pass
-                    count_p = [0,0,0]
-                else:
-                    pass
-            else:
-                pass
-
-        elif STATE == STATE_RECONGNIZE:
-            reco = ser_T1.read(1)
-            if(reco==b'\xaa'):
-                recv = ser_T1.read(10)
-                print(recv)
-                s = str(recv[4])
-                print(s)
-                if s != '0':
-                    count_t[int(s)] += 1
-                if (10 in count_t):
-                    index = count_t.index(10)
-
-                    ser_T2.write(str.encode("\n"))
-                    ser_T2.write(str.encode("\n"))
-                    ser_T2.write(str.encode("cd .. \n"))
-
-                    print("Close Successful!")
-
-                    s = str(index).encode(encoding='UTF-8')
-                    for i in range(20):
-                        ser_P.write(s)
-                    
-                    print(requests.post("http://192.168.87.159:8999/changeUser", data={"text" : str(index)}).json()["text"])
-
-                    speech.SetReader(speech.Reader_Type["Reader_XuXiaoBao"])
-                    speech.SetVolume(10)
-                    speech.Speech_text("你好呀" + User_dict[str(index)] + "，我可以和你聊天！",speech.EncodingFormat_Type["GB2312"])
-                    while speech.GetChipStatus() != speech.ChipStatus_Type['ChipStatus_Idle']:
-                        time.sleep(0.1)
-
-                    count_t = [0,0,0,0]
-                    STATE = STATE_SPEAK
-                print(s)
-        elif STATE == STATE_SPEAK:
-            os.system('bash ~/HiBao_Project/02_iat_open.sh')
-            STATE = STATE_INFRARED
-            os.system("sudo pkill -9 -f green_breath.py")
-            os.system("sudo pkill -9 -f blue_speak.py")
-            os.system("sudo pkill -9 -f change_color.py")
-            os.system("sudo pkill -9 -f red_spark.py")
-            os.system("sudo python3 ~/HiBao_Project/RGB_Demo/set_none.py")
-            os.popen("bash ~/HiBao_Project/RGB_Demo/change_color.sh","w")
-            time.sleep(20)
-        time.sleep(0.01) 
-except KeyboardInterrupt:
-    if ser_P != None:
-        ser_P.close()
-    if ser_T1 != None:
-        ser_T1.close()
-    if ser_T2 != None:
-        ser_T2.close()
-```
-
-**RGB灯光控制、对话服务端与语音识别与合成**实现在附录中体现。
+  **RGB灯光控制、对话服务端与语音识别与合成**实现在附录中体现。
 
 ## 完成情况及性能参数
 
@@ -965,6 +679,222 @@ static void DhtTask(const int *arg)
     
     return NULL;
 }
+```
+
+### PC服务端详细实现代码
+
+#### Class `Context_handler`
+
+```python
+class ContextHandler(object):
+    def __init__(self, max_context=3200, context_del_config=None):
+        super().__init__()
+        self.context = []
+        self.role_lengths = []
+        self.max_context = max_context
+
+        # the config of del context
+        self.context_del_config = context_del_config
+
+    def append_cur_to_context(self, data, complete__length, tag=0):
+
+        if tag == 0:
+            role = "user"
+        elif tag == 1:
+            role = "assistant"
+        else:
+            role = "system"
+
+        role_data = {"role": role, "content": data}
+        self.context.append(role_data)
+        self.role_lengths.append(complete__length)
+
+    def cut_context(self, cur_total_length, tokenizer):
+        if self.context_del_config:
+            del_context(self.context, self.role_lengths, cur_total_length, self.max_context,
+                        tokenizer=tokenizer,
+                        distance_weights=self.context_del_config.distance_weights,
+                        length_weights=self.context_del_config.length_weights,
+                        role_weights=self.context_del_config.role_weights,
+                        sys_role_ratio=self.context_del_config.sys_role_ratio,
+                        del_ratio=self.context_del_config.del_ratio,
+                        max_keep_turns=self.context_del_config.max_keep_turns,
+                        )
+        # use the default pram
+        else:
+            del_context(self.context, self.role_lengths, cur_total_length, self.max_context, tokenizer=tokenizer)
+
+    def clear(self):
+        self.context.clear()
+```
+
+其中包含两个方法：
+
+* `append_cur_to_context `：将当前文本添加到总文本中，并标注主体 (1 : 用户，2 : 助手，3 : 系统)
+* `cut_context`：对总文本进行裁剪，以保证一次输入的总文本长度在一定范围之内。
+* 注意：总文本的意思是所有轮次对话（用户端与助手端）加上系统端指令之和。
+
+#### Class `tokenizer`
+
+```python
+class Tokennizer(object):
+
+    def __init__(self,model_name):
+        super().__init__()
+        self.encoding = tiktoken.encoding_for_model(model_name)
+
+    def num_tokens_from_string(self,query_string: str) -> int:
+        """Returns the number of tokens in a text string."""
+        num_tokens = len(self.encoding.encode(query_string))
+        return num_tokens
+```
+
+#### Function `del_context`
+
+```python
+def del_context(dialogue_context,dialogue_lengths,cur_total_length,max_length,tokenizer,
+                distance_weights=0.05,
+                length_weights=0.4,
+                role_weights=1,
+                sys_role_ratio=3,
+                del_ratio = 0.4,
+                max_keep_turns=30,
+                ):
+    dia_nums = len(dialogue_context)
+
+    #if the dia_nums exceeded max_keep_turns turns,del the oldest dia
+
+    sys_role_weights = role_weights * sys_role_ratio
+
+    is_cut_finished = False
+    while dia_nums > max_keep_turns:
+        index = 0
+        
+        while dialogue_context[index]['role'] == 'system':
+            index += 1
+        
+        dialogue_context.pop(index)
+
+        cur_pop_length = dialogue_lengths[index]
+        dialogue_lengths.pop(index)
+
+        cur_total_length -= cur_pop_length
+
+        dia_nums -= 1
+
+        if cur_total_length <= max_length:
+            is_cut_finished = True
+            break
+
+    if is_cut_finished:
+        return dialogue_context, dialogue_lengths
+
+    del_score_list = []
+    for dia_id in range(dia_nums):
+        distance = dia_nums - dia_id
+        length = dialogue_lengths[dia_id]
+        content = dialogue_context[dia_id]
+
+        if content['role'] == 'assistant':
+            cal_role_weights = sys_role_weights
+        elif content['role'] == 'system':
+            cal_role_weights = pre_role_weights
+        else:
+            cal_role_weights = role_weights
+
+        dia_score = (distance * distance_weights + length / max_length * length_weights) * cal_role_weights
+        del_score_list.append(dia_score)
+
+    del_indexes = argsort(del_score_list, reverse=True)
+
+    del_id = 0
+    while cur_total_length > max_length:
+
+        if del_id == dia_nums - 1:
+            raise Exception("the remain dialogue after context cutting still too long")
+
+        del_dia = dialogue_context[del_indexes[del_id]]
+        del_dia_length = dialogue_lengths[del_indexes[del_id]]
+
+        exceed_num = cur_total_length - max_length
+        # delete the del_ratio numbers at most for each dialogue
+        ch_del_dia_len = len(del_dia['content'])
+        if exceed_num/del_dia_length < del_ratio:
+            # +2 for token "/n"
+            del_st_index = int((exceed_num/del_dia_length)*ch_del_dia_len)+2
+        else:
+            del_st_index = int(del_ratio*ch_del_dia_len)
+
+        deleted_dia = del_dia['content'][del_st_index:]
+        deleted_dia_length = tokenizer.num_tokens_from_string(deleted_dia)
+
+        cur_total_length -= (del_dia_length - deleted_dia_length)
+
+        dialogue_context[del_indexes[del_id]]['content'] = deleted_dia
+        dialogue_lengths[del_indexes[del_id]] = deleted_dia_length
+
+        del_id += 1
+
+    return dialogue_context,dialogue_lengths
+```
+
+**该方法执行两种判断**：
+
+1. 如果对话的总轮次超过了最大的轮次，则删减掉最先前的轮次。
+
+2. 如果对话的总句柄数大于预设的最大数，则根据公式：
+   $$
+   Score = (distance \times W_{distance} + \frac{length}{length_{max}}\times W_{length}) \times W_{calRole}
+   $$
+   从小到大排序分数，删除分数最小的对话直到总句柄数小于最大数。
+
+3. 此中三种角色的权重占比为：
+   $$
+   User:Assistant:System=1:3:10
+   $$
+
+#### chat 调用函数
+
+```python
+def chat_test(input_s, keys, model_name, request_address, context_handler, tokenizer, log_time=True, context_max=3200):
+    requestor = OpenAI_Request(keys, model_name, request_address)
+    # if input_s == "clear":
+    #     context_handler.clear()
+    #     print('start a new session')
+    #     continue
+    # else:
+    inputs_length = tokenizer.num_tokens_from_string(input_s)
+    context_handler.append_cur_to_context(input_s, inputs_length)
+
+    st_time = time.time()
+    res = requestor.post_request(context_handler.context)
+    ed_time = time.time()
+    response = ""
+    if res.status_code == 200:
+
+        response = res.json()['choices'][0]['message']['content']
+        # cut \n for show
+        response = response.lstrip("\n")
+
+        completion_length = res.json()['usage']['completion_tokens']
+        total_length = res.json()['usage']['total_tokens']
+
+        context_handler.append_cur_to_context(response, completion_length, tag=1)
+        if total_length > context_max:
+            context_handler.cut_context(total_length, tokenizer)
+        print(context_handler.context)
+
+    else:
+        status_code = res.status_code
+        reason = res.reason
+        des = res.text
+        raise print(f'visit error :\n status code: {status_code}\n reason: {reason}\n err description: {des}\n '
+                    f'please check whether your account  can access OpenAI API normally')
+
+    if log_time:
+        print(f'time cost : {ed_time - st_time}')
+
+    return response
 ```
 
 ### RGB 实现代码
