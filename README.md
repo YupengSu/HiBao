@@ -281,7 +281,91 @@ hi_void IotPublishSample(void)
 
 #### Taurus_Work
 
+**模型训练：**
 
+1. 数据集采集
+2. 数据集预处理
+3. 模型训练
+
+**板端部署：**
+
+Taurus 板端基于手势识别例程，部署了由服务器训练出的人脸检测与人脸识别模型。对于每一个图片，返回识别值，并同时进行 HDMI/LCD 输出。
+
+```c
+HI_S32 Yolo2HandDetectResnetClassifyCal(uintptr_t model, VIDEO_FRAME_INFO_S *srcFrm, VIDEO_FRAME_INFO_S *dstFrm)
+{
+    SAMPLE_SVP_NNIE_CFG_S *self = (SAMPLE_SVP_NNIE_CFG_S*)model;
+    HI_S32 resLen = 0;
+    int objNum;
+    int ret;
+    int num = 0;
+
+    ret = FrmToOrigImg((VIDEO_FRAME_INFO_S*)srcFrm, &img);
+    SAMPLE_CHECK_EXPR_RET(ret != HI_SUCCESS, ret, "hand detect for YUV Frm to Img FAIL, ret=%#x\n", ret);
+
+    objNum = HandDetectCal(&img, objs); // Send IMG to the detection net for reasoning
+    for (int i = 0; i < objNum; i++) {
+        cnnBoxs[i] = objs[i].box;
+        RectBox *box = &objs[i].box;
+        RectBoxTran(box, HAND_FRM_WIDTH, HAND_FRM_HEIGHT,
+            dstFrm->stVFrame.u32Width, dstFrm->stVFrame.u32Height);
+        SAMPLE_PRT("yolo2_out: {%d, %d, %d, %d}\n", box->xmin, box->ymin, box->xmax, box->ymax);
+        boxs[i] = *box;
+    }
+    biggestBoxIndex = GetBiggestHandIndex(boxs, objNum);
+    SAMPLE_PRT("biggestBoxIndex:%d, objNum:%d\n", biggestBoxIndex, objNum);
+
+    /*
+     * 当检测到对象时，在DSTFRM中绘制一个矩形
+     * When an object is detected, a rectangle is drawn in the DSTFRM
+     */
+    if (biggestBoxIndex >= 0) {
+        objBoxs[0] = boxs[biggestBoxIndex];
+        MppFrmDrawRects(dstFrm, objBoxs, 1, RGB888_GREEN, DRAW_RETC_THICK); // Target hand objnum is equal to 1
+
+        for (int j = 0; (j < objNum) && (objNum > 1); j++) {
+            if (j != biggestBoxIndex) {
+                remainingBoxs[num++] = boxs[j];
+                /*
+                 * 其他手objnum等于objnum -1
+                 * Others hand objnum is equal to objnum -1
+                 */
+                MppFrmDrawRects(dstFrm, remainingBoxs, objNum - 1, RGB888_RED, DRAW_RETC_THICK);
+            }
+        }
+
+        /*
+         * 裁剪出来的图像通过预处理送分类网进行推理
+         * The cropped image is preprocessed and sent to the classification network for inference
+         */
+        ret = ImgYuvCrop(&img, &imgIn, &cnnBoxs[biggestBoxIndex]);
+        SAMPLE_CHECK_EXPR_RET(ret < 0, ret, "ImgYuvCrop FAIL, ret=%#x\n", ret);
+
+        if ((imgIn.u32Width >= WIDTH_LIMIT) && (imgIn.u32Height >= HEIGHT_LIMIT)) {
+            COMPRESS_MODE_E enCompressMode = srcFrm->stVFrame.enCompressMode;
+            ret = OrigImgToFrm(&imgIn, &frmIn);
+            frmIn.stVFrame.enCompressMode = enCompressMode;
+            SAMPLE_PRT("crop u32Width = %d, img.u32Height = %d\n", imgIn.u32Width, imgIn.u32Height);
+            ret = MppFrmResize(&frmIn, &frmDst, IMAGE_WIDTH, IMAGE_HEIGHT);
+            ret = FrmToOrigImg(&frmDst, &imgDst);
+            ret = CnnCalImg(self,  &imgDst, numInfo, sizeof(numInfo) / sizeof((numInfo)[0]), &resLen);
+            SAMPLE_CHECK_EXPR_RET(ret < 0, ret, "CnnCalImg FAIL, ret=%#x\n", ret);
+            HI_ASSERT(resLen <= sizeof(numInfo) / sizeof(numInfo[0]));
+            HandDetectFlag(numInfo[0]);
+            MppFrmDestroy(&frmDst);
+        }
+        IveImgDestroy(&imgIn);
+    } 
+    else{
+        memcpy(osdBuf, "Unknown   ", 10);
+    }
+    HI_OSD_ATTR_S rgn;
+    TxtRgnInit(&rgn, osdBuf, TXT_BEGX, TXT_BEGY, ARGB1555_YELLOW2); // font width and heigt use default 40
+    OsdsSetRgn(g_osdsTrash, g_osd0Trash, &rgn);
+
+    return ret;
+}
+```
 
 #### PC_Work
 
