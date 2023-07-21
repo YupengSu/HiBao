@@ -1,4 +1,4 @@
-<img src="/Users/suyupeng/Documents/GitHub/HiBao/Picture/logo.png" alt="logo" style="zoom:50%;" />
+<img src="Picture/logo.png" alt="logo" style="zoom:50%;" />
 
 # HiBao: 您的智能语音助手
 
